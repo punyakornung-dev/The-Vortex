@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  AI Mock Interview — ระบบสัมภาษณ์จำลองด้วย AI (Client-side 100%)
+  ============================================================
+  เทคโนโลยีที่ใช้:
+   - HTML + Tailwind CSS (โหลดผ่าน CDN) + Vanilla JavaScript
+   - MediaPipe Face Mesh (CDN)      → ตรวจจับใบหน้า / การมองกล้อง
+   - Web Speech API (th-TH)         → แปลงเสียงพูดเป็นข้อความ
+   - fetch() ไปยัง LLM API          → ให้คะแนน + คำแนะนำคำตอบ
+   - ไม่มี Backend เลย — Deploy บน GitHub Pages ได้ทันที
+
+  โครงสร้างไฟล์เดียว แบ่งเป็น 4 ส่วนตามคอมเมนต์:
+   [1] ค่าคอนฟิกหลัก (API Key, System Prompt, คลังคำถาม)
+   [2] กล้องเว็บแคม + MediaPipe (ตรวจการมองกล้อง)
+   [3] Speech-to-Text + การประเมินคำตอบด้วย LLM
+   [4] หน้าแดชบอร์ดสรุปผล + UI "Upgrade to Premium"
+  ============================================================
+-->
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Mock Interview — ฝึกสัมภาษณ์ด้วย AI</title>
+  <meta name="description" content="ฝึกสัมภาษณ์เข้ามหาวิทยาลัย/ทำงานด้วย AI ตรวจการมองกล้อง แปลงเสียงพูดเป็นข้อความ และให้คะแนนคำตอบอัตโนมัติ" />
+  <!-- favicon แบบ inline (ไม่ต้องมีไฟล์เพิ่ม) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+
+  <!-- Tailwind CSS ผ่าน CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ฟอนต์ไทย -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- MediaPipe Face Mesh + Camera Utils (CDN — pin เวอร์ชันเพื่อความเสถียร) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1640029074/camera_utils.js"></script>
+
+  <style>
+    body { font-family: "Noto Sans Thai", sans-serif; }
+    /* กลับภาพกล้องซ้าย-ขวาให้เหมือนกระจกเงา (ไม่กระทบการคำนวณ landmark) */
+    #webcam { transform: scaleX(-1); }
+    /* แอนิเมชันแถบเตือน */
+    @keyframes pulse-warn { 0%,100% { opacity: 1; } 50% { opacity: .65; } }
+    .pulse-warn { animation: pulse-warn 1s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- ══════════ ส่วนหัว ══════════ -->
+  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🎓</span>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">AI Mock Interview</h1>
+          <p class="text-xs text-slate-400">ฝึกสัมภาษณ์จริง วิเคราะห์ด้วย AI</p>
+        </div>
+      </div>
+      <span id="cameraStatus" class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-400">
+        กำลังขอสิทธิ์กล้อง...
+      </span>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+
+    <!-- ══════════ หน้าสัมภาษณ์ (กล้อง + คำถาม + คำตอบ) ══════════ -->
+    <section id="interviewSection" class="grid md:grid-cols-5 gap-6">
+
+      <!-- คอลัมน์ซ้าย: กล้อง -->
+      <div class="md:col-span-3">
+        <div class="relative rounded-2xl overflow-hidden border border-slate-800 bg-black aspect-video">
+          <!-- วิดีโอจากกล้องเว็บแคม แบบเต็มกรอบ -->
+          <video id="webcam" class="w-full h-full object-cover" autoplay muted playsinline></video>
+
+          <!-- แถบเตือนสีแดง: แสดงเมื่อไม่มองกล้องเกิน 3 วินาที -->
+          <div id="lookAwayWarning"
+               class="hidden absolute inset-x-0 top-4 mx-auto w-fit px-6 py-2.5 rounded-full
+                      bg-red-600 text-white font-semibold pulse-warn shadow-lg shadow-red-600/40">
+            ⚠️ กรุณามองกล้อง
+          </div>
+
+          <!-- ป้ายสถานะการมองกล้องแบบเรียลไทม์ -->
+          <div id="eyeStatus"
+               class="absolute bottom-3 left-3 px-3 py-1.5 rounded-full text-xs font-medium bg-black/60 backdrop-blur">
+            👁️ กำลังตรวจจับใบหน้า...
+          </div>
+        </div>
+
+        <!-- ปุ่มควบคุมการสัมภาษณ์ -->
+        <div class="mt-4 flex flex-wrap gap-3">
+          <button id="startBtn"
+                  class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-emerald-950
+                         font-bold transition shadow-lg shadow-emerald-500/25">
+            ▶ เริ่มสัมภาษณ์
+          </button>
+          <button id="endBtn" disabled
+                  class="px-6 py-3 rounded-xl bg-red-500/90 hover:bg-red-500 disabled:opacity-30
+                         disabled:cursor-not-allowed text-white font-bold transition">
+            ■ จบการสัมภาษณ์
+          </button>
+        </div>
+      </div>
+
+      <!-- คอลัมน์ขวา: คำถาม + คำตอบ -->
+      <div class="md:col-span-2 flex flex-col gap-4">
+        <!-- กล่องคำถามจำลอง -->
+        <div class="rounded-2xl border border-indigo-500/40 bg-indigo-500/10 p-5">
+          <p class="text-xs font-semibold text-indigo-300 tracking-wide uppercase mb-2">
+            คำถามที่ <span id="qCounter">-</span>
+          </p>
+          <p id="questionText" class="text-lg font-semibold leading-relaxed">
+            กด "เริ่มสัมภาษณ์" เพื่อรับคำถามแรก
+          </p>
+        </div>
+
+        <!-- คำตอบที่ระบบแปลงจากเสียงพูด -->
+        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5 flex-1 flex flex-col">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">
+            🎙️ คำตอบของคุณ (แปลงจากเสียงพูด)
+          </p>
+          <p id="transcript" class="text-sm text-slate-300 leading-relaxed flex-1 min-h-[80px]">
+            รอการพูด...
+          </p>
+          <p id="evalHint" class="text-xs text-slate-500 mt-2"></p>
+
+          <!-- ผลประเมินจาก LLM -->
+          <div id="evalResult" class="hidden mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4">
+            <p id="evalScore" class="text-2xl font-bold text-emerald-400"></p>
+            <p id="evalFeedback" class="text-sm text-slate-200 mt-1 leading-relaxed whitespace-pre-wrap"></p>
+          </div>
+
+          <div class="mt-4 flex gap-2">
+            <button id="submitBtn" disabled
+                    class="flex-1 px-4 py-2.5 rounded-lg bg-indigo-500 hover:bg-indigo-400 disabled:opacity-30
+                           disabled:cursor-not-allowed text-white text-sm font-semibold transition">
+              ประเมินคำตอบนี้
+            </button>
+            <button id="nextBtn" disabled
+                    class="flex-1 px-4 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 disabled:opacity-30
+                           disabled:cursor-not-allowed text-white text-sm font-semibold transition">
+              คำถามถัดไป →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ หน้าแดชบอร์ดสรุปผล (ซ่อนไว้จนกด "จบการสัมภาษณ์") ══════════ -->
+    <section id="dashboardSection" class="hidden">
+      <div class="text-center mb-8">
+        <p class="text-sm text-slate-400">การสัมภาษณ์เสร็จสิ้น</p>
+        <h2 class="text-3xl font-bold mt-1">📊 รายงานผลการสัมภาษณ์</h2>
+      </div>
+
+      <!-- การ์ดสถิติรวม -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center">
+          <p class="text-4xl font-bold text-emerald-400" id="statEyePct">0%</p>
+          <p class="text-sm text-slate-400 mt-2">เปอร์เซ็นต์การมองกล้อง</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center">
+          <p class="text-4xl font-bold text-indigo-400" id="statAvgScore">-</p>
+          <p class="text-sm text-slate-400 mt-2">คะแนนเฉลี่ย (จาก 10)</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center">
+          <p class="text-4xl font-bold text-amber-400" id="statDuration">0:00</p>
+          <p class="text-sm text-slate-400 mt-2">ระยะเวลาสัมภาษณ์</p>
+        </div>
+      </div>
+
+      <!-- สรุปรายคำถาม -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900 p-6 mb-8">
+        <h3 class="font-semibold mb-4">คำแนะนำและคะแนนรายคำถาม</h3>
+        <div id="resultsList" class="space-y-4">
+          <!-- เติมด้วย JavaScript -->
+        </div>
+      </div>
+
+      <!-- ══════════ ส่วน Business Model: Upgrade to Premium ══════════ -->
+      <div class="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 to-transparent p-8">
+        <div class="flex flex-col md:flex-row md:items-center gap-6">
+          <div class="flex-1">
+            <p class="text-xs font-bold text-amber-400 tracking-widest uppercase">Upgrade to Premium</p>
+            <h3 class="text-2xl font-bold mt-1">ปลดล็อกการสัมภาษณ์แบบไม่จำกัด</h3>
+            <p class="text-sm text-slate-400 mt-2">
+              แพ็กเกจฟรีจำกัด 3 เซสชัน/เดือน — อัปเกรดเพื่อฝึกได้ไม่จำกัด พร้อมคลังคำถามเฉพาะสาขา
+              และรายงานวิเคราะห์เชิงลึก
+            </p>
+          </div>
+          <div class="flex gap-3">
+            <div class="rounded-xl border border-slate-700 bg-slate-900 p-4 text-center min-w-[140px]">
+              <p class="text-xs text-slate-400">รายเดือน</p>
+              <p class="text-2xl font-bold mt-1">฿299</p>
+              <button data-plan="รายเดือน ฿299"
+                      class="premium-buy mt-3 w-full px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-400
+                             text-amber-950 text-sm font-bold transition">
+                ซื้อแพ็กเกจ
+              </button>
+            </div>
+            <div class="rounded-xl border border-amber-500/60 bg-amber-500/10 p-4 text-center min-w-[140px] relative">
+              <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-amber-500 text-amber-950 text-[10px] font-bold">
+                คุ้มสุด
+              </span>
+              <p class="text-xs text-slate-400">รายปี</p>
+              <p class="text-2xl font-bold mt-1">฿1,999</p>
+              <button data-plan="รายปี ฿1,999"
+                      class="premium-buy mt-3 w-full px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-400
+                             text-amber-950 text-sm font-bold transition">
+                ซื้อแพ็กเกจ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-8">
+        <button id="restartBtn"
+                class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold transition">
+          🔄 ฝึกสัมภาษณ์อีกครั้ง
+        </button>
+      </div>
+    </section>
+
+    <!-- กล่องแจ้งเตือนเมื่อเปิดกล้องไม่ได้ -->
+    <div id="cameraError" class="hidden mt-6 rounded-2xl border border-red-500/40 bg-red-500/10 p-6 text-center">
+      <p class="font-semibold text-red-400">🚫 เปิดกล้องไม่สำเร็จ</p>
+      <p class="text-sm text-slate-300 mt-2">
+        กรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์ และต้องเปิดหน้าเว็บผ่าน <b>https://</b> หรือ localhost
+        (เบราว์เซอร์จะบล็อกกล้องบน http:// ปกติ)
+      </p>
+    </div>
+  </main>
+
+  <!-- โมดัลจำลองการซื้อแพ็กเกจ (Mock Payment) -->
+  <div id="premiumModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="rounded-2xl bg-slate-900 border border-amber-500/40 p-8 max-w-sm w-full text-center">
+      <p class="text-4xl">🎉</p>
+      <h3 class="text-xl font-bold mt-3">ยืนยันการสั่งซื้อ</h3>
+      <p class="text-sm text-slate-400 mt-2">แพ็กเกจ: <span id="selectedPlan" class="text-amber-400 font-semibold"></span></p>
+      <p class="text-xs text-slate-500 mt-4 leading-relaxed">
+        (หน้านี้เป็น UI ตัวอย่างของโมเดลรายได้ — ใน production ให้เชื่อมต่อช่องทางชำระเงินจริง เช่น Stripe หรือ PromptPay ที่ปุ่มนี้)
+      </p>
+      <div class="flex gap-3 mt-6">
+        <button id="mockPayBtn"
+                class="flex-1 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold text-sm">
+          ยืนยันชำระเงิน
+        </button>
+        <button id="closeModalBtn"
+                class="flex-1 px-4 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 font-semibold text-sm">
+          ปิด
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center text-xs text-slate-600 py-8">
+    AI Mock Interview — สร้างด้วย HTML + Tailwind CSS + Vanilla JS (Client-side 100%)
+  </footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   [1] ค่าคอนฟิกหลัก
+   ══════════════════════════════════════════════════════════════ */
+
+// 🔑 ใส่ API Key ของคุณที่นี่ (ควรใช้ key ที่จำกัดสิทธิ์และหมุนเวียนบ่อย ๆ)
+// ⚠️ หมายเหตุความปลอดภัย: การฝัง key ในไฟล์ client-side ทำให้ผู้อื่นมองเห็นได้
+//     เหมาะกับการสาธิต/ใช้ส่วนตัวเท่านั้น — ใน production ควรเรียกผ่าน proxy ของตัวเอง
+const API_KEY = "YOUR_API_KEY";
+
+// ปลายทาง LLM API แบบ OpenAI-compatible (เปลี่ยนได้ตามผู้ให้บริการ เช่น
+// OpenAI, Groq, OpenRouter — แก้แค่ URL กับ MODEL)
+const LLM_API_URL = "https://api.openai.com/v1/chat/completions";
+const LLM_MODEL   = "gpt-4o-mini";
+
+// System Prompt ตามข้อกำหนด
+const SYSTEM_PROMPT = "คุณคืออาจารย์สอบสัมภาษณ์ ให้คะแนนคำตอบนี้ 1-10 พร้อมคำแนะนำสั้นๆ";
+
+// ค่าคงที่ของระบบ
+const LOOK_AWAY_LIMIT_MS = 3000;   // ไม่มองกล้องเกิน 3 วิ → เตือน
+const ANSWER_SILENCE_MS  = 4000;   // เงียบ 4 วิ → ถือว่าตอบจบ ส่งประเมินอัตโนมัติ
+const GAZE_THRESHOLD     = 0.20;   // ระยะเบี่ยงม่านตาที่ยอมรับได้ (0 = กลางตา)
+const YAW_THRESHOLD      = 0.14;   // ระยะเบี่ยงจมูกจากกลางหน้า (หันหน้า)
+
+// คลังคำถามสัมภาษณ์จำลอง (แก้ไข/เพิ่มได้ตามต้องการ)
+const QUESTIONS = [
+  "ทำไมถึงอยากเข้าเรียนคณะวิศวกรรมศาสตร์?",
+  "บอกประสบการณ์หรือกิจกรรมที่ภาคภูมิใจที่สุดมาหนึ่งเรื่อง",
+  "ถ้าเจอปัญหาที่แก้ไม่ได้ในโปรเจกต์กลุ่ม คุณจะจัดการอย่างไร?",
+  "อีก 10 ปีข้างหน้า คุณอยากเห็นตัวเองเป็นอย่างไร?",
+];
+
+/* ══════════════════════════════════════════════════════════════
+   [2] กล้องเว็บแคม + MediaPipe Face Mesh (ตรวจการมองกล้อง)
+   ══════════════════════════════════════════════════════════════ */
+
+// ---- ตัวแปรสถานะรวมของแอป ----
+let stream = null;               // MediaStream ของกล้อง
+let faceMesh = null;             // อินสแตนซ์ MediaPipe
+let mpCamera = null;             // อินสแตนซ์ Camera utils (ป้อนเฟรมให้ FaceMesh)
+let interviewState = "idle";     // idle | running | done
+
+// สถิติการมองกล้อง
+let sessionStart = 0, sessionEnd = 0;
+let eyeContactMs = 0;            // เวลาสะสม (มิลลิวินาที) ที่ผู้ใช้มองกล้อง
+let lastFrameTime = 0;           // เวลาของเฟรมก่อนหน้า (ไว้คำนวณ dt)
+let lastLookTime = 0;            // ครั้งล่าสุดที่ยังมองกล้องอยู่
+let warningShown = false;        // แถบเตือนแสดงอยู่หรือไม่
+
+// สถานะคำถาม/คำตอบ
+let currentQIndex = 0;
+let answers = [];                // [{question, answer, score, feedback}]
+
+// ---- อ้างอิง DOM ----
+const $ = (id) => document.getElementById(id);
+const videoEl   = $("webcam");
+const eyeStatus = $("eyeStatus");
+const camStatus = $("cameraStatus");
+
+/* เริ่มต้น: ขอสิทธิ์กล้อง "ทันที" เมื่อเปิดหน้าเว็บ */
+window.addEventListener("DOMContentLoaded", initCamera);
+
+async function initCamera() {
+  try {
+    // ขอสิทธิ์เข้าถึงกล้อง (browser จะ popup ให้อนุญาต)
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false, // ไม่ใช้ getUserMedia เก็บเสียง — ใช้ Web Speech API แทน
+    });
+    videoEl.srcObject = stream;
+    await videoEl.play();
+    camStatus.textContent = "📷 กล้องพร้อมแล้ว";
+    camStatus.className = "text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400";
+    startFaceMesh();
+  } catch (err) {
+    console.error("Camera error:", err);
+    camStatus.textContent = "🚫 เปิดกล้องไม่ได้";
+    $("cameraError").classList.remove("hidden");
+  }
+}
+
+/* ตั้งค่า MediaPipe Face Mesh และเริ่มป้อนเฟรมวิดีโอแบบเรียลไทม์ */
+function startFaceMesh() {
+  faceMesh = new FaceMesh({
+    locateFile: (file) =>
+      `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/${file}`,
+  });
+  faceMesh.setOptions({
+    maxNumFaces: 1,            // สนใจผู้สัมภาษณ์คนเดียว
+    refineLandmarks: true,     // ⭐ จำเป็น! เปิดให้ตรวจจับ "ม่านตา" (iris) จุดที่ 468-477
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
+  faceMesh.onResults(onFaceResults); // callback ทุกเฟรม
+
+  // Camera utils: ดึงเฟรมจาก <video> ส่งเข้า FaceMesh อัตโนมัติ
+  mpCamera = new Camera(videoEl, {
+    onFrame: async () => { await faceMesh.send({ image: videoEl }); },
+    width: 1280,
+    height: 720,
+  });
+  mpCamera.start();
+}
+
+/* Callback ทุกเฟรม: คำนวณการมองกล้อง + จับเวลา + แสดงเตือน */
+function onFaceResults(results) {
+  if (interviewState !== "running") {
+    eyeStatus.textContent = "👁️ พร้อมตรวจจับ — กดเริ่มสัมภาษณ์ได้เลย";
+    return;
+  }
+
+  const now = performance.now();
+  const dt = lastFrameTime ? now - lastFrameTime : 0; // ระยะเวลาเฟรมนี้ (มิลลิวินาที)
+  lastFrameTime = now;
+
+  const lm = results.multiFaceLandmarks && results.multiFaceLandmarks[0];
+  const looking = lm ? computeEyeContact(lm) : false; // ไม่เจอหน้า = ไม่มองกล้อง
+
+  if (looking) {
+    // ✅ มองกล้อง: สะสมเวลา + รีเซ็ตตัวจับเวลาไม่มอง
+    eyeContactMs += dt;
+    lastLookTime = now;
+    if (warningShown) { warningShown = false; $("lookAwayWarning").classList.add("hidden"); }
+    eyeStatus.textContent = "✅ กำลังมองกล้อง";
+    eyeStatus.className = "absolute bottom-3 left-3 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-600/80 backdrop-blur";
+  } else {
+    // ❌ ไม่มองกล้อง: ถ้าเกิน 3 วินาทีติดต่อกัน → แสดงแถบเตือนสีแดง
+    if (!warningShown && lastLookTime && now - lastLookTime > LOOK_AWAY_LIMIT_MS) {
+      warningShown = true;
+      $("lookAwayWarning").classList.remove("hidden");
+    }
+    eyeStatus.textContent = lm ? "👀 สายตาไม่ได้อยู่ที่กล้อง" : "❓ ไม่พบใบหน้า";
+    eyeStatus.className = "absolute bottom-3 left-3 px-3 py-1.5 rounded-full text-xs font-medium bg-black/60 backdrop-blur";
+  }
+}
+
+/* คำนวณว่าผู้ใช้กำลังมองกล้องหรือไม่ จาก landmark ของ Face Mesh
+   หลักการ:
+   - ม่านตา (iris: จุด 468 ตาขวา / 473 ตาซ้าย) ควรอยู่ "กลาง" ระหว่างหัวตา-หางตา
+   - จมูก (จุด 1) ควรอยู่ "กลาง" ระหว่างแก้มซ้าย-ขวา (234, 454) = ไม่หันหน้า
+   ถ้าค่าเบี่ยงเกิน threshold → ถือว่ามองไม่ตรงกล้อง */
+function computeEyeContact(lm) {
+  // ผลต่างตำแหน่งม่านตาในแนวนอน (ค่าระหว่าง 0..1 เทียบกับความกว้างตา, 0.5 = กลางตา)
+  function irisX(inner, outer, iris) {
+    const w = Math.abs(lm[outer].x - lm[inner].x);
+    if (w < 1e-6) return 0.5;
+    return (lm[iris].x - Math.min(lm[inner].x, lm[outer].x)) / w;
+  }
+  // ผลต่างตำแหน่งม่านตาในแนวตั้ง (0..1 เทียบความสูงของตา, 0.5 = กลางตา)
+  function irisY(top, bottom, iris) {
+    const h = Math.abs(lm[bottom].y - lm[top].y);
+    if (h < 1e-6) return 0.5;
+    return (lm[iris].y - Math.min(lm[top].y, lm[bottom].y)) / h;
+  }
+
+  const offLx = irisX(33, 133, 468) - 0.5;   // ตาขวาของผู้ใช้ (แนวนอน)
+  const offRx = irisX(362, 263, 473) - 0.5;  // ตาซ้ายของผู้ใช้ (แนวนอน)
+  const offLy = irisY(159, 145, 468) - 0.5;  // ตาขวาของผู้ใช้ (แนวตั้ง)
+  const offRy = irisY(386, 374, 473) - 0.5;  // ตาซ้ายของผู้ใช้ (แนวตั้ง)
+
+  // การหันหน้า (yaw): จมูกเทียบกลางหน้า
+  const faceW = Math.abs(lm[454].x - lm[234].x);
+  const noseRel = faceW > 1e-6 ? (lm[1].x - lm[234].x) / faceW : 0.5;
+
+  return (
+    Math.abs(offLx) < GAZE_THRESHOLD &&
+    Math.abs(offRx) < GAZE_THRESHOLD &&
+    Math.abs(offLy) < GAZE_THRESHOLD + 0.06 && // แนวตั้งให้ยืดหยุ่นกว่าแนวนอนเล็กน้อย
+    Math.abs(offRy) < GAZE_THRESHOLD + 0.06 &&
+    Math.abs(noseRel - 0.5) < YAW_THRESHOLD
+  );
+}
+
+/* ปิดกล้อง (เรียกตอนจบการสัมภาษณ์) */
+function stopCamera() {
+  if (mpCamera) { mpCamera.stop(); mpCamera = null; }
+  if (stream) { stream.getTracks().forEach((t) => t.stop()); stream = null; }
+  videoEl.srcObject = null;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   [3] Speech-to-Text (Web Speech API) + ประเมินคำตอบด้วย LLM
+   ══════════════════════════════════════════════════════════════ */
+
+let recognition = null;      // อินสแตนซ์ SpeechRecognition
+let finalTranscript = "";    // ข้อความรวมของคำตอบปัจจุบัน
+let silenceTimer = null;     // ตัวจับเวลา "เงียบ = ตอบจบ"
+
+/* เริ่มฟังเสียงภาษาไทย (ใช้ได้บน Chrome / Edge) */
+function startRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    $("transcript").textContent =
+      "(เบราว์เซอร์นี้ไม่รองรับ Web Speech API — กรุณาใช้ Google Chrome)";
+    return;
+  }
+  recognition = new SR();
+  recognition.lang = "th-TH";          // 🇹🇭 ภาษาไทย
+  recognition.continuous = true;       // ฟังต่อเนื่อง
+  recognition.interimResults = true;   // แสดงข้อความระหว่างพูดด้วย
+
+  recognition.onresult = (event) => {
+    let interim = "";
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const r = event.results[i];
+      if (r.isFinal) finalTranscript += r[0].transcript.trim() + " ";
+      else interim += r[0].transcript;
+    }
+    $("transcript").textContent = (finalTranscript + interim).trim() || "รอการพูด...";
+    restartSilenceTimer(); // พูดต่อได้เรื่อย ๆ — หยุดพูด 4 วิค่อยส่งประเมิน
+  };
+
+  // Chrome จะหยุดฟังเองช่วงสั้น ๆ → สั่งเริ่มใหม่ให้ฟังต่อเนื่อง
+  recognition.onend = () => {
+    if (interviewState === "running") { try { recognition.start(); } catch (_) {} }
+  };
+  // ถ้าไม่มีไมโครโฟน/ผู้ใช้ไม่อนุญาต → แจ้งเตือนครั้งเดียว ไม่วนลองใหม่จนสแปม console
+  let srFailCount = 0;
+  recognition.onerror = (e) => {
+    console.warn("SpeechRecognition error:", e.error);
+    const fatal = ["audio-capture", "not-allowed", "service-not-allowed"];
+    if (fatal.includes(e.error)) {
+      srFailCount++;
+      if (srFailCount === 1) {
+        $("evalHint").textContent =
+          "⚠️ ไม่สามารถใช้ไมโครโฟนได้ (" + e.error + ") — อนุญาตไมโครโฟนในเบราว์เซอร์ หรือพิมพ์คำตอบไม่ได้ในเวอร์ชันนี้";
+      }
+      if (srFailCount >= 3) recognition.onend = null; // หยุดวนลองใหม่
+    }
+  };
+
+  recognition.start();
+}
+
+function stopRecognition() {
+  clearTimeout(silenceTimer);
+  if (recognition) { recognition.onend = null; try { recognition.stop(); } catch (_) {} recognition = null; }
+}
+
+/* ถ้าผู้ใช้เงียบครบ ANSWER_SILENCE_MS → ถือว่าตอบจบ ส่งประเมินอัตโนมัติ */
+function restartSilenceTimer() {
+  clearTimeout(silenceTimer);
+  $("evalHint").textContent = "⏳ หยุดพูด 4 วินาที ระบบจะส่งคำตอบให้อาจารย์ AI ประเมินอัตโนมัติ";
+  silenceTimer = setTimeout(() => submitAnswer("auto"), ANSWER_SILENCE_MS);
+}
+
+/* ส่งคำตอบไปให้ LLM ประเมิน (ปุ่มกดเองหรือจากเงียบ 4 วิ) */
+async function submitAnswer(trigger) {
+  if (interviewState !== "running") return;
+  clearTimeout(silenceTimer);
+
+  const answer = finalTranscript.trim();
+  if (answer.length < 5) {
+    $("evalHint").textContent = "❕ยังไม่ได้พูดคำตอบ — ลองพูดตอบคำถามก่อนนะ";
+    if (trigger === "auto") restartSilenceTimer();
+    return;
+  }
+
+  $("submitBtn").disabled = true;
+  $("nextBtn").disabled = true;
+  $("evalHint").textContent = "🤖 อาจารย์ AI กำลังอ่านคำตอบของคุณ...";
+  stopRecognition(); // หยุดฟังชั่วคราวขณะประเมิน
+
+  const evaluation = await evaluateWithLLM(QUESTIONS[currentQIndex], answer);
+
+  // บันทึกผล + แสดงบนจอ
+  answers.push({ question: QUESTIONS[currentQIndex], answer, ...evaluation });
+  $("evalResult").classList.remove("hidden");
+  $("evalScore").textContent = evaluation.score != null ? `คะแนน ${evaluation.score}/10` : "ประเมินไม่สำเร็จ";
+  $("evalFeedback").textContent = evaluation.feedback;
+  $("evalHint").textContent = "";
+
+  // ถ้าเป็นคำถามสุดท้าย เปลี่ยนปุ่มถัดไปเป็นคำแนะนำให้กดจบการสัมภาษณ์
+  if (currentQIndex >= QUESTIONS.length - 1) {
+    $("nextBtn").disabled = true;
+    $("nextBtn").textContent = "ครบทุกคำถามแล้ว ✔";
+    $("evalHint").textContent = "กด \"จบการสัมภาษณ์\" เพื่อดูรายงานสรุปผล";
+  } else {
+    $("nextBtn").disabled = false;
+    $("nextBtn").textContent = "คำถามถัดไป →";
+  }
+  $("submitBtn").disabled = false;
+}
+
+/* เรียก LLM API ผ่าน fetch() — ส่ง System Prompt + คำถาม + คำตอบ */
+async function evaluateWithLLM(question, answer) {
+  // ยังไม่ใส่ key → คืนค่าแจ้งเตือนแทน (ไม่ให้แอปพัง)
+  if (!API_KEY || API_KEY === "YOUR_API_KEY") {
+    return { score: null, feedback: "⚠️ ยังไม่ได้ใส่ API_KEY — เปิดไฟล์ index.html แก้ตัวแปร API_KEY ในส่วนค่าคอนฟิกด้านบนของ <script>" };
+  }
+  try {
+    const res = await fetch(LLM_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: LLM_MODEL,
+        temperature: 0.4,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: `คำถาม: ${question}\n\nคำตอบของผู้สมัคร: ${answer}` },
+        ],
+      }),
+    });
+    if (!res.ok) throw new Error(`API ตอบกลับด้วยสถานะ ${res.status}`);
+    const data = await res.json();
+    const text = data?.choices?.[0]?.message?.content?.trim() || "";
+    // ดึงตัวเลขคะแนน 1-10 จากข้อความที่ LLM ตอบ (ถ้ามี)
+    const m = text.match(/\b(10|[1-9])\s*(?:\/\s*10|คะแนน|:)?/);
+    return { score: m ? parseInt(m[1], 10) : null, feedback: text || "(ไม่มีข้อความตอบกลับ)" };
+  } catch (err) {
+    console.error("LLM error:", err);
+    return { score: null, feedback: "⚠️ เรียก LLM API ไม่สำเร็จ: " + err.message };
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   [4] การควบคุมเซสชัน + หน้าแดชบอร์ดสรุปผล + Premium UI
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── ปุ่ม "เริ่มสัมภาษณ์" ── */
+$("startBtn").addEventListener("click", () => {
+  interviewState = "running";
+  sessionStart = Date.now();
+  eyeContactMs = 0;
+  lastFrameTime = 0;
+  lastLookTime = performance.now();
+  currentQIndex = 0;
+  answers = [];
+
+  $("startBtn").classList.add("hidden");
+  $("endBtn").disabled = false;
+  $("submitBtn").disabled = false;
+  showQuestion(0);
+  startRecognition();
+});
+
+/* ── แสดงคำถามลำดับที่ index ── */
+function showQuestion(index) {
+  currentQIndex = index;
+  finalTranscript = "";
+  $("qCounter").textContent = `${index + 1}/${QUESTIONS.length}`;
+  $("questionText").textContent = QUESTIONS[index];
+  $("transcript").textContent = "รอการพูด...";
+  $("evalResult").classList.add("hidden");
+  $("evalScore").textContent = "";
+  $("evalFeedback").textContent = "";
+  $("nextBtn").disabled = true;
+  $("nextBtn").textContent = "คำถามถัดไป →";
+  $("evalHint").textContent = "🎤 พูดตอบได้เลย ระบบจะบันทึกเสียงเป็นข้อความให้";
+  restartSilenceTimer();
+}
+
+/* ── ปุ่ม "ประเมินคำตอบนี้" (สำรองไว้กรณี auto-detect ไม่ทำงาน) ── */
+$("submitBtn").addEventListener("click", () => submitAnswer("manual"));
+
+/* ── ปุ่ม "คำถามถัดไป" ── */
+$("nextBtn").addEventListener("click", () => {
+  if (currentQIndex < QUESTIONS.length - 1) showQuestion(currentQIndex + 1);
+});
+
+/* ── ปุ่ม "จบการสัมภาษณ์" → ซ่อนกล้อง แสดงแดชบอร์ด ── */
+$("endBtn").addEventListener("click", () => {
+  interviewState = "done";
+  sessionEnd = Date.now();
+  stopRecognition();
+  stopCamera();
+  clearTimeout(silenceTimer);
+  $("lookAwayWarning").classList.add("hidden");
+  $("interviewSection").classList.add("hidden");
+  renderDashboard();
+  $("dashboardSection").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ── ปุ่มเริ่มใหม่: กลับไปหน้าสัมภาษณ์ (ขอกล้องใหม่) ── */
+$("restartBtn").addEventListener("click", () => {
+  $("dashboardSection").classList.add("hidden");
+  $("interviewSection").classList.remove("hidden");
+  $("startBtn").classList.remove("hidden");
+  $("endBtn").disabled = true;
+  $("submitBtn").disabled = true;
+  $("questionText").textContent = 'กด "เริ่มสัมภาษณ์" เพื่อรับคำถามแรก';
+  $("qCounter").textContent = "-";
+  $("transcript").textContent = "รอการพูด...";
+  interviewState = "idle";
+  initCamera();
+});
+
+/* ── สร้างหน้าแดชบอร์ด: เปอร์เซ็นต์มองกล้อง + คะแนน/คำแนะนำรายข้อ ── */
+function renderDashboard() {
+  const durationSec = Math.max(1, Math.round((sessionEnd - sessionStart) / 1000));
+  const eyePct = Math.round((eyeContactMs / 1000 / durationSec) * 100);
+
+  // สถิติหัวแดชบอร์ด
+  $("statEyePct").textContent = eyePct + "%";
+  $("statEyePct").className =
+    "text-4xl font-bold " + (eyePct >= 70 ? "text-emerald-400" : eyePct >= 40 ? "text-amber-400" : "text-red-400");
+  $("statDuration").textContent = `${Math.floor(durationSec / 60)}:${String(durationSec % 60).padStart(2, "0")}`;
+
+  const scored = answers.filter((a) => a.score != null);
+  $("statAvgScore").textContent =
+    scored.length ? (scored.reduce((s, a) => s + a.score, 0) / scored.length).toFixed(1) : "-";
+
+  // รายการคะแนนรายคำถาม
+  const list = $("resultsList");
+  list.innerHTML = "";
+  if (answers.length === 0) {
+    list.innerHTML = '<p class="text-sm text-slate-500">ไม่มีคำตอบที่บันทึกไว้ในเซสชันนี้</p>';
+    return;
+  }
+  answers.forEach((a, i) => {
+    const card = document.createElement("div");
+    card.className = "rounded-xl border border-slate-800 bg-slate-950/60 p-4";
+    card.innerHTML = `
+      <div class="flex items-start justify-between gap-3">
+        <p class="font-semibold text-sm">ข้อ ${i + 1}: ${a.question}</p>
+        <span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-bold ${
+          a.score != null ? "bg-emerald-500/15 text-emerald-400" : "bg-slate-700 text-slate-400"
+        }">${a.score != null ? a.score + "/10" : "N/A"}</span>
+      </div>
+      <p class="text-xs text-slate-500 mt-2 line-clamp-2">💬 "${a.answer}"</p>
+      <p class="text-sm text-slate-300 mt-2 whitespace-pre-wrap">${a.feedback}</p>
+    `;
+    list.appendChild(card);
+  });
+}
+
+/* ── Premium: โมดัลจำลองการซื้อแพ็กเกจ (Mock Purchase) ── */
+document.querySelectorAll(".premium-buy").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $("selectedPlan").textContent = btn.dataset.plan;
+    $("premiumModal").classList.remove("hidden");
+  });
+});
+$("closeModalBtn").addEventListener("click", () => $("premiumModal").classList.add("hidden"));
+$("mockPayBtn").addEventListener("click", () => {
+  $("premiumModal").classList.add("hidden");
+  alert("ขอบคุณ! (นี่เป็นเดโม่ — ระบบชำระเงินจริงจะเชื่อมต่อในขั้นตอน production)");
+});
+// ปิดโมดัลเมื่อคลิกพื้นหลังดำ
+$("premiumModal").addEventListener("click", (e) => {
+  if (e.target === $("premiumModal")) $("premiumModal").classList.add("hidden");
+});
+</script>
+</body>
+</html>
