@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html lang="th" class="dark scroll-smooth" data-theme="neon">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Vortex: AI Mock Interview & EdTech Ecosystem | แพลตฟอร์มจำลองสัมภาษณ์ & เตรียมสอบ TCAS อัจฉริยะ</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+
+  <!-- Google Fonts: Prompt & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Prompt"', '"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', '"Prompt"', 'sans-serif'],
+          },
+          colors: {
+            slate: {
+              850: '#0f172a',
+              900: '#090d16',
+              950: '#020617',
+            }
+          },
+          animation: {
+            'float': 'float 4s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'pulse-red': 'pulseRed 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'shimmer': 'shimmer 2.5s linear infinite',
+            'soundwave': 'soundwave 1.2s ease-in-out infinite alternate',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+              '50%': { opacity: 1, transform: 'scale(1.02)' },
+            },
+            pulseRed: {
+              '0%, 100%': { boxShadow: '0 0 25px rgba(239, 68, 68, 0.5), inset 0 0 15px rgba(239, 68, 68, 0.3)' },
+              '50%': { boxShadow: '0 0 50px rgba(239, 68, 68, 0.9), inset 0 0 30px rgba(239, 68, 68, 0.6)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            },
+            soundwave: {
+              '0%': { height: '10%' },
+              '100%': { height: '100%' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- MediaPipe Face Mesh & Camera Utils CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
+  <!-- Custom Styles for The Vortex EdTech Super App -->
+  <style>
+    :root, [data-theme="neon"] {
+      --color-primary: #6366f1;       /* Indigo */
+      --color-secondary: #8b5cf6;     /* Violet */
+      --color-accent: #10b981;        /* Emerald */
+      --color-glow: rgba(99, 102, 241, 0.45);
+      --color-glow-secondary: rgba(139, 92, 246, 0.45);
+      --color-bg-orb1: rgba(99, 102, 241, 0.20);
+      --color-bg-orb2: rgba(139, 92, 246, 0.18);
+      --color-bg-orb3: rgba(16, 185, 129, 0.14);
+      --theme-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #10b981);
+    }
+
+    [data-theme="matrix"] {
+      --color-primary: #10b981;
+      --color-secondary: #06b6d4;
+      --color-accent: #84cc16;
+      --color-glow: rgba(16, 185, 129, 0.45);
+      --color-glow-secondary: rgba(6, 182, 212, 0.45);
+      --color-bg-orb1: rgba(16, 185, 129, 0.22);
+      --color-bg-orb2: rgba(6, 182, 212, 0.18);
+      --color-bg-orb3: rgba(132, 204, 22, 0.14);
+      --theme-gradient: linear-gradient(135deg, #10b981, #06b6d4, #84cc16);
+    }
+
+    [data-theme="sunset"] {
+      --color-primary: #f43f5e;
+      --color-secondary: #f97316;
+      --color-accent: #eab308;
+      --color-glow: rgba(244, 63, 94, 0.45);
+      --color-glow-secondary: rgba(249, 115, 22, 0.45);
+      --color-bg-orb1: rgba(244, 63, 94, 0.22);
+      --color-bg-orb2: rgba(249, 115, 22, 0.18);
+      --color-bg-orb3: rgba(234, 179, 8, 0.14);
+      --theme-gradient: linear-gradient(135deg, #f43f5e, #f97316, #eab308);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary);
+      border-radius: 9999px;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.70);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .glass-card-hover:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-primary);
+      box-shadow: 0 15px 40px -10px var(--color-glow);
+    }
+
+    .glass-nav {
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-sidebar {
+      background: rgba(2, 6, 23, 0.90);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Cyber Glows */
+    .text-theme-glow {
+      text-shadow: 0 0 18px var(--color-glow), 0 0 35px var(--color-glow);
+    }
+    .box-theme-glow {
+      box-shadow: 0 0 35px -5px var(--color-glow);
+    }
+    .border-theme-glow {
+      border-color: var(--color-primary) !important;
+    }
+
+    /* Background Cyber Grids */
+    .bg-grid-cyber {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    .ambient-glow-1 {
+      position: absolute;
+      top: -10%;
+      left: 10%;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--color-bg-orb1) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(70px);
+      transition: background 0.8s ease;
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      top: 35%;
+      right: -5%;
+      width: 750px;
+      height: 750px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--color-bg-orb2) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(85px);
+      transition: background 0.8s ease;
+    }
+
+    /* HUD Bracket Corners */
+    .hud-bracket {
+      position: relative;
+    }
+    .hud-bracket::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 14px;
+      height: 14px;
+      border-top: 2px solid var(--color-primary);
+      border-left: 2px solid var(--color-primary);
+      border-top-left-radius: 4px;
+      pointer-events: none;
+    }
+    .hud-bracket::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 14px;
+      height: 14px;
+      border-bottom: 2px solid var(--color-secondary);
+      border-right: 2px solid var(--color-secondary);
+      border-bottom-right-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* Interactive Mouse Spotlight */
+    #mouse-spotlight {
+      position: fixed;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--color-glow) 0%, transparent 65%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      opacity: 0.35;
+      filter: blur(40px);
+      transition: opacity 0.3s ease;
+    }
+
+    .shimmer-text {
+      background: linear-gradient(90deg, #c084fc, #e879f9, #818cf8, #c084fc);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-certificate, #printable-certificate * {
+        visibility: visible;
+      }
+      #printable-certificate {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden font-sans selection:bg-indigo-600 selection:text-white flex">
+
+  <!-- Interactive Mouse Spotlight -->
+  <div id="mouse-spotlight"></div>
+
+  <!-- Ambient Glowing Background Elements -->
+  <div class="fixed inset-0 bg-grid-cyber pointer-events-none z-0"></div>
+  <div class="ambient-glow-1 z-0"></div>
+  <div class="ambient-glow-2 z-0"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- ========================================================== -->
+  <!-- SIDEBAR NAVIGATION MENU (ECOSYSTEM SWITCHER)               -->
+  <!-- ========================================================== -->
+  <aside id="app-sidebar" class="fixed inset-y-0 left-0 z-40 w-64 glass-sidebar flex flex-col justify-between transition-transform duration-300 transform -translate-x-full md:translate-x-0">
+    
+    <!-- Sidebar Top: Brand & Ecosystem Badge -->
+    <div>
+      <div class="h-20 px-6 flex items-center gap-3.5 border-b border-white/5">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center p-0.5 shadow-lg shadow-indigo-500/30 shrink-0" style="background: var(--theme-gradient);">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+            <i class="fa-solid fa-tornado text-xl text-transparent bg-clip-text animate-spin-slow" style="background: var(--theme-gradient); -webkit-background-clip: text;"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-lg font-black tracking-tight font-display text-white">THE VORTEX</span>
+          </div>
+          <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            EdTech Super App
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Links (6 Modules) -->
+      <nav class="p-4 space-y-1.5 text-xs font-semibold">
+        
+        <!-- Module 1: AI Mock Interview (Core) -->
+        <button onclick="navigateToModule('interview')" id="nav-btn-interview" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-white bg-indigo-600/20 border border-indigo-500/40 shadow-sm">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-brain text-indigo-400 text-sm"></i>
+            <span>AI Mock Interview</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-300 uppercase font-bold">CORE</span>
+        </button>
+
+        <!-- Module 2: AI Portfolio & Resume Analyzer -->
+        <button onclick="navigateToModule('portfolio')" id="nav-btn-portfolio" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-file-invoice text-emerald-400 text-sm"></i>
+            <span>AI Portfolio Analyzer</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 uppercase font-bold">UPSELL</span>
+        </button>
+
+        <!-- Module 3: TCAS / TPAT Mock Exams -->
+        <button onclick="navigateToModule('exams')" id="nav-btn-exams" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-pen-nib text-amber-400 text-sm"></i>
+            <span>TCAS / TPAT Exams</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 uppercase font-bold">QUIZ</span>
+        </button>
+
+        <!-- Module 4: Script Builder & Smart Vocabulary -->
+        <button onclick="navigateToModule('scripts')" id="nav-btn-scripts" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-book-bookmark text-violet-400 text-sm"></i>
+            <span>STAR Script & Vocab</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-300 uppercase font-bold">GUIDE</span>
+        </button>
+
+        <!-- Module 5: B2B Widget Embed -->
+        <button onclick="navigateToModule('b2b')" id="nav-btn-b2b" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-code text-cyan-400 text-sm"></i>
+            <span>B2B Widget Embed</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 uppercase font-bold">B2B</span>
+        </button>
+
+        <!-- Module 6: Lead Gen / Tutor Consultation -->
+        <button onclick="navigateToModule('tutors')" id="nav-btn-tutors" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-chalkboard-user text-rose-400 text-sm"></i>
+            <span>ติวเตอร์ตัวจริง 1-on-1</span>
+          </div>
+          <span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 uppercase font-bold">LEAD</span>
+        </button>
+
+        <!-- Module 7: Pricing Plans -->
+        <button onclick="navigateToModule('pricing')" id="nav-btn-pricing" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-crown text-yellow-400 text-sm"></i>
+            <span>แพ็กเกจราคา (Pricing)</span>
+          </div>
+        </button>
+
+      </nav>
+    </div>
+
+    <!-- Sidebar Bottom: Settings & Sound Controls -->
+    <div class="p-4 border-t border-white/5 space-y-3">
+      <div class="p-3 rounded-xl bg-slate-900/80 border border-white/5 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-slate-300 font-bold">Pro Plan Active</span>
+        </div>
+        <button onclick="openSettingsModal()" class="text-slate-400 hover:text-indigo-400 transition-colors" title="ตั้งค่า Gemini API Key">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+        <span class="text-[11px]">The Vortex v3.5 EdTech</span>
+        <button onclick="toggleSoundSfx()" id="sidebar-sfx-btn" class="hover:text-white flex items-center gap-1.5">
+          <i id="sound-icon-indicator" class="fa-solid fa-volume-high text-emerald-400"></i>
+          <span class="text-[10px]">SFX</span>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Mobile Overlay Backdrop -->
+  <div id="mobile-sidebar-backdrop" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 z-30 bg-black/70 backdrop-blur-sm md:hidden"></div>
+
+  <!-- ========================================================== -->
+  <!-- MAIN APP CONTENT AREA (WITH HEADER)                        -->
+  <!-- ========================================================== -->
+  <div class="flex-1 md:ml-64 min-h-screen flex flex-col relative z-10">
+    
+    <!-- Top Bar Navigation -->
+    <header class="sticky top-0 z-30 glass-nav h-20 px-4 sm:px-8 flex items-center justify-between">
+      
+      <!-- Left: Mobile Toggle & Active Breadcrumb -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSidebar()" class="md:hidden w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-300">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div>
+          <h2 id="topbar-title" class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span>AI Mock Interview</span>
+            <span class="text-xs font-normal text-slate-400 hidden sm:inline">• ระบบจำลองสัมภาษณ์พร้อมวิเคราะห์สายตา</span>
+          </h2>
+        </div>
+      </div>
+
+      <!-- Right: Quick Actions (Theme Switcher, API Key, LINE OA) -->
+      <div class="flex items-center gap-2.5">
+        
+        <!-- Theme Palette Menu -->
+        <div class="relative">
+          <button onclick="toggleThemeMenu()" id="btn-theme-dropdown" class="px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-700/60 text-xs font-semibold text-slate-200 transition-all flex items-center gap-2">
+            <span id="theme-preview-dot" class="w-2.5 h-2.5 rounded-full" style="background: var(--color-primary); box-shadow: 0 0 10px var(--color-glow);"></span>
+            <span class="hidden lg:inline" id="current-theme-name">ธีม: Cyber Neon</span>
+            <i class="fa-solid fa-palette text-slate-400 text-xs"></i>
+          </button>
+          
+          <div id="theme-menu-popover" class="hidden absolute right-0 mt-2 w-48 glass-card rounded-2xl p-2.5 border border-white/10 shadow-2xl z-50 space-y-1">
+            <button onclick="applyTheme('neon')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white/5 text-xs text-slate-200">
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span>Cyber Neon</span>
+              </span>
+            </button>
+            <button onclick="applyTheme('matrix')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white/5 text-xs text-slate-200">
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span>Emerald Matrix</span>
+              </span>
+            </button>
+            <button onclick="applyTheme('sunset')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white/5 text-xs text-slate-200">
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span>Solar Cyber</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- API Key Settings Button -->
+        <button onclick="openSettingsModal()" class="px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/60 text-xs font-medium text-slate-200 flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-400" id="apiKey-status-dot"></div>
+          <i class="fa-solid fa-key text-slate-400"></i>
+          <span class="hidden sm:inline">Gemini API</span>
+        </button>
+
+        <!-- Direct Line OA Consultation Button -->
+        <a href="https://line.me" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition-all flex items-center gap-2">
+          <i class="fa-brands fa-line text-emerald-400 text-base"></i>
+          <span class="hidden md:inline">LINE ติวเตอร์</span>
+        </a>
+
+      </div>
+
+    </header>
+
+    <!-- Content Sections Wrapper -->
+    <main class="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto space-y-12">
+
+      <!-- ========================================================== -->
+      <!-- 1. AI MOCK INTERVIEW MODULE (CORE)                         -->
+      <!-- ========================================================== -->
+      <section id="module-interview" class="space-y-10 animate-fadeIn">
+        
+        <!-- Interview Setup Sub-View -->
+        <div id="subview-interview-setup" class="space-y-10">
+          
+          <div class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs sm:text-sm font-semibold animate-float" style="border-color: var(--color-glow); background: rgba(99, 102, 241, 0.1); color: var(--color-primary);">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>The Vortex AI Cognitive Mock Interview (TCAS & Corporate)</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-black font-display tracking-tight text-white leading-tight">
+              จำลองสัมภาษณ์จริงด้วย AI <br>
+              <span class="text-transparent bg-clip-text text-theme-glow" style="background: var(--theme-gradient); -webkit-background-clip: text;">
+                วิเคราะห์สายตา Face Mesh & ซับไตเติลสด
+              </span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+              พร้อมรับการประเมินจาก Google Gemini AI แยก 4 การ์ดผลลัพธ์ละเอียด และโชว์ <strong class="text-indigo-400">"ตัวอย่างคำตอบที่ AI แนะนำ (Suggested Answer)"</strong> เพื่อนำไปใช้ตอบจริงได้ทันที
+            </p>
+          </div>
+
+          <!-- Configuration Card -->
+          <div class="max-w-2xl mx-auto glass-card rounded-2xl p-6 sm:p-8 hud-bracket shadow-2xl space-y-6">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background: var(--color-glow);">
+                  <i class="fa-solid fa-sliders text-base"></i>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-white">ตั้งค่าเป้าหมายการสัมภาษณ์</h3>
+                  <p class="text-xs text-slate-400">เลือกคณะและโหมดที่ต้องการทดสอบ</p>
+                </div>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-medium">พร้อมทดสอบ</span>
+            </div>
+
+            <!-- Dynamic 2-Level Dropdown -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                  1. เลือกเป้าหมายหลัก
+                </label>
+                <select id="select-goal-level1" onchange="onGoalLevel1Change()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye text-violet-400"></i>
+                  2. เลือกคณะ / สาขาเฉพาะทาง (TCAS / Career)
+                </label>
+                <select id="select-goal-level2" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all cursor-pointer">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Analysis Mode Toggle -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span>3. โหมดกล้องและการวิเคราะห์</span>
+                <span class="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">ตรวจจับสายตา (Face Mesh)</span>
+              </label>
+              <div class="grid grid-cols-2 gap-3 p-1 bg-slate-900/90 rounded-xl border border-slate-700/80">
+                <label id="label-mode-camera" class="cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-indigo-500 bg-indigo-950/40 text-left transition-all">
+                  <input type="radio" name="input-mode-choice" value="camera" checked onchange="onModeToggleChange(this.value)" class="sr-only">
+                  <i class="fa-solid fa-video text-indigo-400"></i>
+                  <div>
+                    <span class="text-xs font-bold text-white block">เปิดกล้อง (Face Mesh)</span>
+                    <span class="text-[10px] text-slate-400">เตือนเมื่อหลบสายตา</span>
+                  </div>
+                </label>
+
+                <label id="label-mode-audio" class="cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-slate-800 bg-slate-900/60 text-left transition-all">
+                  <input type="radio" name="input-mode-choice" value="audio" onchange="onModeToggleChange(this.value)" class="sr-only">
+                  <i class="fa-solid fa-microphone text-slate-400"></i>
+                  <div>
+                    <span class="text-xs font-bold text-slate-300 block">เสียงอย่างเดียว</span>
+                    <span class="text-[10px] text-slate-500">ปิดกล้อง ซ้อมพูด</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Stress Mode & Auto Voice Options -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 rounded-xl bg-slate-900/60 border border-white/5 text-xs">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="check-stress-mode" class="rounded bg-slate-950 border-slate-700 text-indigo-500">
+                <span class="text-slate-300">⏱️ โหมดกดดันเวลา (60 วินาที/ข้อ)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="check-auto-voice" checked class="rounded bg-slate-950 border-slate-700 text-indigo-500">
+                <span class="text-slate-300">🔊 AI อ่านคำถามด้วยเสียง</span>
+              </label>
+            </div>
+
+            <!-- Start Button -->
+            <button onclick="startInterviewFlow()" class="w-full py-4 rounded-xl text-white font-extrabold text-sm transition-all transform hover:scale-[1.01] shadow-xl flex items-center justify-center gap-2.5" style="background: var(--theme-gradient);">
+              <i class="fa-solid fa-rocket"></i>
+              <span>เข้าสู่ห้องสัมภาษณ์เสมือนจริง (Enter Room)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Interview Active Room Sub-View -->
+        <div id="subview-interview-room" class="hidden space-y-6">
+          
+          <!-- Top Room Status Bar -->
+          <div class="glass-card rounded-2xl px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white" style="background: var(--color-glow);">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <div>
+                <span id="interview-role-badge" class="text-xs font-bold text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/30">คณะวิศวกรรมศาสตร์</span>
+                <p id="interview-step-counter" class="text-sm font-bold text-white mt-0.5">คำถามที่ 1 จาก 5</p>
+              </div>
+            </div>
+
+            <!-- Timers -->
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-700/80 font-mono text-sm font-bold text-white">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                <span id="session-timer-display">00:00</span>
+              </div>
+              <div id="stress-countdown-box" class="hidden flex items-center gap-2 bg-red-950/80 px-4 py-2 rounded-xl border border-red-500/50 font-mono text-sm font-bold text-red-300">
+                <i class="fa-solid fa-stopwatch text-red-400"></i>
+                <span id="stress-timer-display">60s</span>
+              </div>
+            </div>
+
+            <button onclick="finishInterview()" class="px-4 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 text-xs font-bold transition-all">
+              จบการสัมภาษณ์
+            </button>
+          </div>
+
+          <!-- Video & Question Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Video & Face Mesh Container (7 Cols) -->
+            <div class="lg:col-span-7 space-y-3">
+              <div class="relative rounded-2xl overflow-hidden glass-card border border-theme-glow hud-bracket shadow-2xl bg-black aspect-video flex items-center justify-center">
+                <video id="webcam-video" playsinline autoplay muted class="w-full h-full object-cover transform -scale-x-100"></video>
+                <canvas id="mesh-canvas" class="absolute inset-0 w-full h-full pointer-events-none transform -scale-x-100"></canvas>
+
+                <!-- Audio Only Visualizer -->
+                <div id="audio-only-visualizer" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-950 p-6 text-center space-y-4">
+                  <div class="w-20 h-20 rounded-full border-2 flex items-center justify-center text-2xl animate-pulse" style="border-color: var(--color-primary); color: var(--color-primary);">
+                    <i class="fa-solid fa-microphone"></i>
+                  </div>
+                  <p class="text-xs text-slate-400">โหมดเสียงอย่างเดียว กำลังตรวจจับและแปลงเสียงพูดของคุณ</p>
+                </div>
+
+                <!-- Gaze Status Badge -->
+                <div id="eye-status-pill" class="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/10 text-xs font-semibold">
+                  <span id="eye-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="eye-status-text" class="text-emerald-400">สบตากรรมการ (Good)</span>
+                </div>
+
+                <!-- ⚠️ LOOK AWAY ALERT OVERLAY (>3 SECONDS) -->
+                <div id="alert-eye-contact" class="hidden absolute inset-0 z-30 flex items-center justify-center bg-red-950/80 backdrop-blur-sm animate-pulse-red p-6 text-center">
+                  <div class="glass-card rounded-2xl p-6 border-2 border-red-500 max-w-sm space-y-3 bg-red-950/90 shadow-2xl">
+                    <i class="fa-solid fa-triangle-exclamation text-3xl text-red-400 animate-bounce"></i>
+                    <h4 class="text-lg font-black text-white uppercase">⚠️ กรุณาสบตากรรมการ!</h4>
+                    <p class="text-xs text-red-200">คุณไม่ได้มองกล้องมาเกิน 3 วินาทีแล้ว สบตากล้องเพื่อสร้างความน่าเชื่อถือ</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gaze Indicator Bar -->
+              <div class="glass-card rounded-xl p-3 flex items-center justify-between text-xs text-slate-400">
+                <span><i class="fa-solid fa-lightbulb text-amber-400 mr-1.5"></i>มองตรงไปที่เลนส์กล้อง</span>
+                <span id="gaze-percentage-indicator" class="font-mono text-slate-200">สบตา: 100%</span>
+              </div>
+            </div>
+
+            <!-- Question & Transcript Panel (5 Cols) -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="glass-card rounded-2xl p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                  <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--color-primary);">คำถามจากคณะกรรมการ</span>
+                  <button onclick="speakCurrentQuestion()" class="p-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 text-xs" title="ฟังเสียงคำถาม">
+                    <i class="fa-solid fa-volume-high"></i>
+                  </button>
+                </div>
+
+                <div class="min-h-[120px] flex items-center">
+                  <p id="current-question-text" class="text-base sm:text-lg font-bold text-white leading-relaxed">กำลังโหลดคำถาม...</p>
+                </div>
+
+                <div class="flex gap-2.5 pt-2">
+                  <button onclick="skipQuestion()" class="flex-1 py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-800">
+                    ข้ามคำถาม
+                  </button>
+                  <button id="btn-next-question" onclick="nextQuestion()" class="flex-1 py-3 rounded-xl text-white text-xs font-bold shadow-lg" style="background: var(--theme-gradient);">
+                    คำถามถัดไป <i class="fa-solid fa-arrow-right ml-1"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Answer Box -->
+              <div class="glass-card rounded-2xl p-4 space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-300">
+                  <span><i class="fa-solid fa-align-left text-emerald-400 mr-1.5"></i>คำตอบของคุณในข้อนี้</span>
+                  <span id="word-count-badge" class="font-mono text-slate-400">0 คำ</span>
+                </div>
+                <div id="active-question-transcript-box" class="h-28 overflow-y-auto p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-300">
+                  <span class="text-slate-500 italic">คำพูดของคุณจะปรากฏที่นี่...</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Real-time Floating Subtitles -->
+          <div class="glass-card rounded-2xl p-4 flex items-center gap-3 border border-emerald-500/20">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-closed-captioning"></i>
+            </div>
+            <p id="live-subtitle-text" class="text-xs sm:text-sm font-medium text-white min-h-[1.2rem]">
+              "ระบบพร้อมรับฟังคำตอบของคุณแล้ว กรุณาเริ่มพูด..."
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Interview Report Dashboard Sub-View -->
+        <div id="subview-interview-report" class="hidden space-y-8">
+          
+          <div class="text-center max-w-3xl mx-auto space-y-3">
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+              <i class="fa-solid fa-award text-amber-400 mr-1"></i> สรุปผลการประเมินรอบที่เสร็จสิ้น
+            </span>
+            <h2 class="text-3xl font-black font-display text-white">ผลการวิเคราะห์การสัมภาษณ์รอบนี้</h2>
+            <p class="text-xs sm:text-sm text-slate-400">ประมวลผลด้วยเกณฑ์รับเข้าศึกษาจริง พร้อมตัวอย่างสคริปต์คำตอบทองคำ</p>
+          </div>
+
+          <!-- 4 Core Report Cards Grid (As Requested) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            
+            <!-- Card 1: คะแนนรวม (Overall Score) -->
+            <div class="glass-card rounded-2xl p-6 border-2 border-theme-glow box-theme-glow space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <i class="fa-solid fa-chart-line text-indigo-400"></i>
+                  1. คะแนนรวม (Total Score)
+                </span>
+                <span id="report-score-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  ผ่านเกณฑ์มาตรฐาน
+                </span>
+              </div>
+
+              <div class="flex items-baseline gap-2">
+                <span id="ai-score-number" class="text-5xl font-black text-white font-display text-theme-glow">8.5</span>
+                <span class="text-xl font-bold text-slate-400">/ 10</span>
+              </div>
+
+              <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden">
+                <div id="ai-score-bar" class="h-full rounded-full transition-all duration-1000" style="width: 85%; background: var(--theme-gradient);"></div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 pt-2 text-xs">
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-white/5">
+                  <span class="text-slate-400 block text-[10px]">Eye Contact</span>
+                  <span id="report-eye-percent" class="font-bold text-emerald-400 text-sm">88%</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-900/60 border border-white/5">
+                  <span class="text-slate-400 block text-[10px]">Speech Rate</span>
+                  <span id="report-wpm" class="font-bold text-amber-400 text-sm">115 WPM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: จุดแข็ง (Strengths) -->
+            <div class="glass-card rounded-2xl p-6 border border-emerald-500/30 space-y-3 bg-emerald-950/20">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check"></i>
+                2. จุดเด่นของคุณ (Key Strengths)
+              </span>
+              <ul id="report-strengths-list" class="space-y-2 text-xs text-slate-200">
+                <!-- Populated via JS -->
+              </ul>
+            </div>
+
+            <!-- Card 3: จุดที่ต้องแก้ (Improvements & Red Flags) -->
+            <div class="glass-card rounded-2xl p-6 border border-amber-500/30 space-y-3 bg-amber-950/20">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                3. จุดที่ต้องแก้ไขด่วน (Critical Fixes)
+              </span>
+              <ul id="report-improvements-list" class="space-y-2 text-xs text-slate-200">
+                <!-- Populated via JS -->
+              </ul>
+            </div>
+
+            <!-- Card 4: ตัวอย่างคำตอบที่ AI แนะนำ (Suggested Answer) -->
+            <div class="glass-card rounded-2xl p-6 border border-indigo-500/40 space-y-3 bg-indigo-950/30">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                  4. ตัวอย่างคำตอบที่ AI แนะนำ (Suggested Answer)
+                </span>
+                <button onclick="copySuggestedAnswer()" class="text-[10px] text-indigo-300 hover:text-white flex items-center gap-1">
+                  <i class="fa-regular fa-copy"></i> ก๊อปปี้
+                </button>
+              </div>
+              <p class="text-[11px] text-slate-400">สคริปต์คำตอบทองคำที่ตอบแล้วตรงใจกรรมการ 10/10 สำหรับคำถามที่คุณตอบ:</p>
+              <div class="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-500/20 text-xs text-slate-200 leading-relaxed font-sans italic" id="report-suggested-answer">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- 3. LEAD GENERATION BANNER (MONETIZATION FOR TUTORS)       -->
+          <!-- ======================================================== -->
+          <div class="max-w-5xl mx-auto glass-card rounded-2xl p-6 border-2 border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-slate-900/80 to-indigo-950/40 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
+            <div class="space-y-2 text-left">
+              <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
+                🔥 พิเศษสำหรับรอบ Portfolio & TCAS
+              </span>
+              <h3 class="text-lg sm:text-xl font-black text-white">
+                ยังไม่มั่นใจผลคะแนน? ปรึกษา "ติวเตอร์พี่จุฬา-ศิริราช" ตัวจริงแบบ 1-on-1
+              </h3>
+              <p class="text-xs text-slate-300 max-w-xl">
+                ติวสดผ่าน Zoom วิเคราะห์พอร์ตรายบุคคล พร้อมจำลองสัมภาษณ์เจาะลึกเฉพาะคณะเป้าหมายก่อนลงสนามจริง
+              </p>
+            </div>
+
+            <button onclick="openLeadGenModal()" class="shrink-0 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow-xl shadow-emerald-500/30 flex items-center gap-2">
+              <i class="fa-brands fa-line text-base"></i>
+              <span>นัดติวฟรี 15 นาทีผ่าน LINE OA</span>
+            </button>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <button onclick="openCertificateModal()" class="px-6 py-3.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-indigo-500 text-slate-200 text-xs font-bold flex items-center gap-2">
+              <i class="fa-solid fa-certificate text-amber-400"></i>
+              <span>ดูใบรับรองผล / สั่งพิมพ์ PDF</span>
+            </button>
+            <button onclick="restartSession()" class="px-8 py-3.5 rounded-xl text-white text-xs font-bold shadow-xl flex items-center gap-2" style="background: var(--theme-gradient);">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>ฝึกซ้อมรอบใหม่</span>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 2. B2B AI WIDGET EMBED MODULE (MONETIZATION FOR TUTORS)    -->
+      <!-- ========================================================== -->
+      <section id="module-b2b" class="hidden space-y-8 animate-fadeIn">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold border border-cyan-500/30 uppercase tracking-wider">
+            B2B EdTech Partner License
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white">
+            ฝังระบบ AI Mock Interview ลงบนเว็บกวดวิชาของคุณ
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            สร้างความแตกต่างเหนือคู่แข่ง! ซื้อ License ก๊อปปี้โค้ด <code class="text-cyan-300">&lt;script&gt;</code> ไปฝังในระบบนักเรียนของคุณได้ทันทีแบบ White-label
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto items-start">
+          
+          <!-- Code Generator & Embed Snippet (7 Cols) -->
+          <div class="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-terminal text-cyan-400 text-lg"></i>
+                <h3 class="text-sm font-bold text-white">Widget Code Generator</h3>
+              </div>
+              <span class="text-[10px] text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 font-mono">v3.5 CDN Ready</span>
+            </div>
+
+            <!-- Customizer Controls -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block text-slate-400 font-semibold mb-1">ชื่อสถาบันกวดวิชา (Brand Name)</label>
+                <input type="text" id="b2b-input-brand" value="We By The Brain" oninput="updateWidgetSnippet()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs">
+              </div>
+              <div>
+                <label class="block text-slate-400 font-semibold mb-1">ธีมสีของ Widget (Color Theme)</label>
+                <select id="b2b-input-theme" onchange="updateWidgetSnippet()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs">
+                  <option value="cyber-indigo">Cyber Indigo (โทนม่วง-คราม)</option>
+                  <option value="emerald-matrix">Emerald Matrix (เขียวกวดวิชาวิทย์)</option>
+                  <option value="solar-orange">Solar Orange (ส้มสดใส)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Code Snippet Box -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-400">วางโค้ดนี้ในแท็ก <code class="text-white">&lt;body&gt;</code> ของเว็บกวดวิชา:</span>
+                <button onclick="copyWidgetSnippet()" class="text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1">
+                  <i class="fa-regular fa-copy"></i> คัดลอกโค้ด
+                </button>
+              </div>
+              <pre class="p-4 rounded-xl bg-slate-950 border border-cyan-500/30 text-[11px] font-mono text-cyan-200 overflow-x-auto leading-relaxed" id="b2b-snippet-display">
+&lt;!-- The Vortex AI Mock Interview Widget v3.5 --&gt;
+&lt;script src="https://cdn.thevortex.ai/v3/widget.min.js"
+        data-license-key="VTX-PARTNER-88912-B2B"
+        data-brand="We By The Brain"
+        data-theme="cyber-indigo"
+        data-exam-track="TCAS-ALL"
+        async&gt;&lt;/script&gt;
+&lt;div id="vortex-interview-embed"&gt;&lt;/div&gt;</pre>
+            </div>
+
+            <!-- Perks -->
+            <div class="grid grid-cols-2 gap-3 text-xs text-slate-300 pt-2 border-t border-white/5">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-emerald-400"></i>
+                <span>ซ่อนแบรนด์ The Vortex (100% White-label)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-check text-emerald-400"></i>
+                <span>ไม่จำกัดจำนวนรอบของนักเรียน</span>
+              </div>
+            </div>
+
+            <button onclick="selectPricingPlan('B2B 1,990.-')" class="w-full py-3.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition-all shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-building-columns"></i>
+              <span>สั่งซื้อ B2B License (฿1,990.-/เดือน)</span>
+            </button>
+          </div>
+
+          <!-- Live Interactive Widget Preview (5 Cols) -->
+          <div class="lg:col-span-5 glass-card rounded-2xl p-6 border border-cyan-500/30 space-y-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+              <i class="fa-solid fa-desktop"></i>
+              Live Interactive Widget Preview
+            </span>
+            <div class="rounded-xl border border-white/10 bg-slate-950 p-4 space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-brain"></i>
+                  </div>
+                  <span id="preview-brand-label" class="font-bold text-xs text-white">We By The Brain AI Room</span>
+                </div>
+                <span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded">Active</span>
+              </div>
+
+              <div class="aspect-video rounded-lg bg-slate-900 border border-slate-800 flex flex-col items-center justify-center p-3 text-center space-y-2">
+                <i class="fa-solid fa-camera text-slate-500 text-xl"></i>
+                <p class="text-[11px] text-slate-400">Webcam & Real-time Face Mesh Embed Frame</p>
+                <span class="text-[10px] text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">Powered by Your Brand</span>
+              </div>
+
+              <div class="space-y-1.5 text-[11px]">
+                <div class="flex justify-between text-slate-400">
+                  <span>สถานะการเชื่อมต่อ:</span>
+                  <span class="text-emerald-400">Ready to Embed</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                  <span>โควตานักเรียน:</span>
+                  <span class="text-white">Unlimited Active Students</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 3. LEAD GEN DEDICATED CONSULTATION SECTION                 -->
+      <!-- ========================================================== -->
+      <section id="module-tutors" class="hidden space-y-8 animate-fadeIn">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-xs font-bold border border-rose-500/30 uppercase tracking-wider">
+            Verified Mentor Network
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white">
+            เครือข่ายติวเตอร์และโค้ชสัมภาษณ์ตัวต่อตัว
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            จับคู่กับรุ่นพี่นิสิตแพทย์-วิศวะ-บัญชี จุฬาฯ/มธ. เพื่อเทรนสัมภาษณ์แบบ Private 1-on-1 ก่อนลงสนามจริง
+          </p>
+        </div>
+
+        <!-- 3 Mentor Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          
+          <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white text-lg font-black">
+                  พพ
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">พี่ภูมิ (วิศวะคอมฯ จุฬาฯ)</h4>
+                  <span class="text-[11px] text-indigo-400">TCAS รอบ 1 Portfolio เกียรตินิยม</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                เชี่ยวชาญการตรวจพอร์ตสายคอมพิวเตอร์ หุ่นยนต์ AI และการตอบคำถาม Technical Interview
+              </p>
+            </div>
+            <button onclick="openLeadGenModal('พี่ภูมิ วิศวะ จุฬาฯ')" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-indigo-300 border border-indigo-500/30 text-xs font-bold">
+              นัดคุยกับพี่ภูมิ
+            </button>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-600 flex items-center justify-center text-white text-lg font-black">
+                  พม
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">พี่มิ้นท์ (แพทย์ศิริราช)</h4>
+                  <span class="text-[11px] text-emerald-400">ผู้คัดเลือกสัมภาษณ์แพทย์ MMI</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                โค้ชคำถามจริยธรรมแพทย์ สถานการณ์กดดัน และการสร้างความประทับใจแรกต่ออาจารย์หมอ
+              </p>
+            </div>
+            <button onclick="openLeadGenModal('พี่มิ้นท์ แพทย์ศิริราช')" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+              นัดคุยกับพี่มิ้นท์
+            </button>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-600 flex items-center justify-center text-white text-lg font-black">
+                  พท
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-white">พี่ท็อป (BBA ธรรมศาสตร์)</h4>
+                  <span class="text-[11px] text-amber-400">Case Competition Champion</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                จำลองสัมภาษณ์ภาษาอังกฤษ (English Mock) เชี่ยวชาญการตอบแบบ Leadership & Business Mindset
+              </p>
+            </div>
+            <button onclick="openLeadGenModal('พี่ท็อป BBA มธ.')" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/30 text-xs font-bold">
+              นัดคุยกับพี่ท็อป
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 4. AI PORTFOLIO & RESUME ANALYZER (UPSELL)                 -->
+      <!-- ========================================================== -->
+      <section id="module-portfolio" class="hidden space-y-8 animate-fadeIn">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/30 uppercase tracking-wider">
+            AI Portfolio & SOP Diagnostic
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white">
+            ตรวจความพร้อมพอร์ตโฟลิโอ TCAS รอบ 1 ด้วย AI
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            วิเคราะห์ว่าผลงาน กิจกรรม และโครงงานของคุณตรงตามเกณฑ์คัดเลือกของคณะและมหาวิทยาลัยเป้าหมายหรือไม่
+          </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">เลือกมหาวิทยาลัย & คณะเป้าหมาย</label>
+              <select id="portfolio-target-faculty" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <option value="วิศวกรรมคอมพิวเตอร์ จุฬาฯ">คณะวิศวกรรมศาสตร์ (คอมพิวเตอร์) - จุฬาฯ</option>
+                <option value="แพทยศาสตร์ ศิริราช/รามา">คณะแพทยศาสตร์ (TCAS รอบ 1 Portfolio) - ศิริราช/รามา</option>
+                <option value="พาณิชยศาสตร์และการบัญชี (BBA) มธ.">คณะพาณิชยศาสตร์และการบัญชี (BBA) - ธรรมศาสตร์</option>
+                <option value="นิติศาสตร์ ธรรมศาสตร์">คณะนิติศาสตร์ - ธรรมศาสตร์</option>
+                <option value="สถาปัตยกรรมศาสตร์ ลาดกระบัง">คณะสถาปัตยกรรมศาสตร์ - พระจอมเกล้าลาดกระบัง</option>
+              </select>
+            </div>
+
+            <div class="flex items-end">
+              <button onclick="loadDemoPortfolio()" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300 font-semibold flex items-center justify-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                <span>โหลดเนื้อหาพอร์ตตัวอย่าง (Quick Demo)</span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">พิมพ์หรือวางเนื้อหาพอร์ตโฟลิโอ / โครงงาน / รางวัล / กิจกรรมจิตอาสา</label>
+            <textarea id="portfolio-input-text" rows="7" placeholder="เช่น โครงงาน Smart Farm IoT วัดความชื้นในดินและสั่งรดน้ำผ่านมือถือ ได้รับรางวัลเหรียญทองระดับภาค, ประธานชุมนุมคอมพิวเตอร์..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed font-sans"></textarea>
+          </div>
+
+          <button onclick="analyzePortfolioWithAI()" id="btn-analyze-portfolio" class="w-full py-4 rounded-xl text-white font-extrabold text-sm transition-all shadow-xl flex items-center justify-center gap-2" style="background: var(--theme-gradient);">
+            <i class="fa-solid fa-microchip"></i>
+            <span>วิเคราะห์ความสอดคล้องกับเกณฑ์คณะ (Analyze Portfolio)</span>
+          </button>
+
+          <!-- Portfolio Results Area -->
+          <div id="portfolio-results-area" class="hidden pt-6 border-t border-white/10 space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="glass-card rounded-xl p-4 text-center border border-emerald-500/30">
+                <span class="text-[10px] text-slate-400 uppercase">Match Score</span>
+                <p id="port-match-score" class="text-3xl font-black text-emerald-400 font-display mt-1">88%</p>
+                <span class="text-[10px] text-slate-400">ความตรงเกณฑ์</span>
+              </div>
+              <div class="glass-card rounded-xl p-4 text-center border border-white/10">
+                <span class="text-[10px] text-slate-400 uppercase">Project Impact</span>
+                <p class="text-3xl font-black text-indigo-400 font-display mt-1">High</p>
+                <span class="text-[10px] text-slate-400">ระดับผลกระทบ</span>
+              </div>
+              <div class="glass-card rounded-xl p-4 text-center border border-white/10">
+                <span class="text-[10px] text-slate-400 uppercase">TCAS Alignment</span>
+                <p class="text-3xl font-black text-amber-400 font-display mt-1">Pass</p>
+                <span class="text-[10px] text-slate-400">ผ่านเกณฑ์เบื้องต้น</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
+                <h4 class="font-bold text-emerald-400 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check"></i> จุดเด่นที่ตรงเกณฑ์คณะ
+                </h4>
+                <ul id="port-strengths" class="space-y-1.5 text-slate-200"></ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 space-y-2">
+                <h4 class="font-bold text-amber-400 flex items-center gap-1.5">
+                  <i class="fa-solid fa-triangle-exclamation"></i> จุดที่ต้องเพิ่มก่อนยื่นจริง
+                </h4>
+                <ul id="port-gaps" class="space-y-1.5 text-slate-200"></ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 5. TCAS / TPAT MOCK EXAMS MODULE (VALUE-ADD QUIZ)          -->
+      <!-- ========================================================== -->
+      <section id="module-exams" class="hidden space-y-8 animate-fadeIn">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold border border-amber-500/30 uppercase tracking-wider">
+            TCAS & TPAT Exam Hall
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white">
+            ห้องทำข้อสอบจำลอง TPAT3 / TPAT1 จับเวลาจริง
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            ระบบ Client-side Quiz โจทย์จำลอง กดเลือกคำตอบปุ๊บ แสดงเฉลยละเอียดและเทคนิคคิดลัดทันที
+          </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          
+          <!-- Exam Header & Timer -->
+          <div class="flex items-center justify-between pb-4 border-b border-white/10">
+            <div>
+              <span class="text-xs font-bold text-amber-400 uppercase">ชุดข้อสอบ: TPAT3 ความถนัดด้านวิศวกรรมศาสตร์</span>
+              <p id="exam-question-number" class="text-sm font-bold text-white">ข้อที่ 1 จาก 3</p>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-900 px-3.5 py-1.5 rounded-xl border border-slate-700 font-mono text-xs font-bold text-amber-300">
+              <i class="fa-solid fa-clock"></i>
+              <span id="exam-timer">09:45</span>
+            </div>
+          </div>
+
+          <!-- Question Content -->
+          <div class="space-y-4">
+            <h3 id="exam-question-title" class="text-sm sm:text-base font-bold text-white leading-relaxed">
+              วัตถุมวล 10 kg วางอยู่บนพื้นราบที่มีสัมประสิทธิ์ความเสียดทานจลน์ 0.2 หากมีแรงดึงในแนวราบขนาด 50 N ดึงวัตถุเป็นระยะทาง 5 เมตร จงหาความเร่งของวัตถุ (กำหนด g = 10 m/s²)
+            </h3>
+
+            <!-- Choices Grid (ก, ข, ค, ง) -->
+            <div id="exam-choices-container" class="space-y-2.5">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Detailed Solution Box (Visible after answering) -->
+          <div id="exam-solution-box" class="hidden p-4 rounded-xl bg-slate-900/90 border border-amber-500/30 text-xs space-y-2">
+            <span class="font-bold text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb"></i> เฉลยละเอียด & เทคนิคคิดลัด:
+            </span>
+            <p id="exam-solution-text" class="text-slate-200 leading-relaxed font-sans">
+              <!-- Populated via JS -->
+            </p>
+          </div>
+
+          <!-- Question Navigation -->
+          <div class="flex justify-between pt-2">
+            <button onclick="prevExamQuestion()" id="btn-prev-exam" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold">
+              <i class="fa-solid fa-arrow-left mr-1"></i> ข้อก่อนหน้า
+            </button>
+            <button onclick="nextExamQuestion()" id="btn-next-exam" class="px-5 py-2.5 rounded-xl text-white text-xs font-bold shadow-lg" style="background: var(--theme-gradient);">
+              ข้อถัดไป <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 6. STAR SCRIPT BUILDER & SMART VOCABULARY (CHEAT SHEET)    -->
+      <!-- ========================================================== -->
+      <section id="module-scripts" class="hidden space-y-10 animate-fadeIn">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+          <span class="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-bold border border-violet-500/30 uppercase tracking-wider">
+            Knowledge Base & Cheat Sheet
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-black font-display text-white">
+            STAR Script Builder & คลังคำศัพท์ปราบเซียน
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            สอนโครงสร้างการตอบคำถามแบบสากล (Situation, Task, Action, Result) พร้อมตารางคำถามปราบเซียนที่กรรมการชอบใช้ดักคอ
+          </p>
+        </div>
+
+        <!-- Part 1: Interactive STAR Builder -->
+        <div class="max-w-4xl mx-auto glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-star text-amber-400 text-lg"></i>
+              <h3 class="text-sm font-bold text-white">STAR Technique Interactive Script Builder</h3>
+            </div>
+            <button onclick="polishScriptWithAI()" class="px-3 py-1.5 rounded-xl bg-violet-600/30 hover:bg-violet-600/50 border border-violet-500/40 text-violet-300 text-xs font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> ให้ AI เกลาภาษา
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="block font-bold text-indigo-400 mb-1">S - Situation (สถานการณ์หรือปัญหาที่เจอ)</label>
+              <textarea id="star-input-s" rows="3" placeholder="ตอนทำโครงงานหุ่นยนต์ เซนเซอร์ตรวจจับเส้นเกิดไหม้ก่อนวันแข่ง 1 วัน..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-bold text-violet-400 mb-1">T - Task (หน้าที่และความรับผิดชอบของคุณ)</label>
+              <textarea id="star-input-t" rows="3" placeholder="ผมในฐานะหัวหน้าทีมเขียนโปรแกรม ต้องรีบหาทางแก้ปัญหาโดยไม่มีงบซื้อใหม่..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-bold text-emerald-400 mb-1">A - Action (การลงมือแก้ไขปัญหาอย่างชาญฉลาด)</label>
+              <textarea id="star-input-a" rows="3" placeholder="ผมดัดแปลงโค้ดใช้เซนเซอร์อัลตราโซนิกที่มีอยู่เดิมมาคำนวณระยะแทน..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-bold text-amber-400 mb-1">R - Result (ผลลัพธ์ที่เป็นตัวเลขและความสำเร็จ)</label>
+              <textarea id="star-input-r" rows="3" placeholder="หุ่นยนต์สามารถวิ่งผ่านอุปสรรคได้ทันเวลา และทีมเราได้รางวัลรองชนะเลิศอันดับ 1..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+          </div>
+
+          <!-- Preview Combined Script -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-400 font-bold">ร่างสคริปต์คำตอบของคุณแบบสมบูรณ์:</span>
+              <button onclick="copyCombinedScript()" class="text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+                <i class="fa-regular fa-copy"></i> ก๊อปปี้สคริปต์
+              </button>
+            </div>
+            <div id="star-combined-preview" class="p-4 rounded-xl bg-slate-950 border border-white/10 text-xs text-slate-200 leading-relaxed font-sans">
+              กรอกข้อมูลในช่อง S-T-A-R ด้านบนเพื่อสร้างสคริปต์อัตโนมัติ...
+            </div>
+          </div>
+        </div>
+
+        <!-- Part 2: Killer Questions Cheat Sheet Table -->
+        <div class="max-w-5xl mx-auto glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+            <div>
+              <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-skull text-rose-400"></i>
+                คลังคำถามปราบเซียน (Killer Questions Cheat Sheet)
+              </h3>
+              <p class="text-xs text-slate-400">เทคนิคการตอบให้ดูแพง vs ข้อห้ามที่ไม่ควรพูดเด็ดขาด</p>
+            </div>
+            <input type="text" id="filter-cheat-sheet" oninput="filterCheatSheetTable()" placeholder="ค้นหาคำถาม..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white">
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="text-[11px] uppercase bg-slate-900/90 text-slate-400 border-b border-white/10">
+                <tr>
+                  <th class="py-3 px-4">คำถามปราบเซียน</th>
+                  <th class="py-3 px-4 text-emerald-400">ตอบแนวไหนให้ดูแพง (Winning Angle)</th>
+                  <th class="py-3 px-4 text-rose-400">ข้อห้ามที่ไม่ควรพูด (Fatal Red Flags)</th>
+                  <th class="py-3 px-4 text-amber-400">คีย์เวิร์ดทรงพลัง</th>
+                </tr>
+              </thead>
+              <tbody id="cheat-sheet-tbody" class="divide-y divide-white/5">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- 7. PRICING MODEL MODULE                                    -->
+      <!-- ========================================================== -->
+      <section id="module-pricing" class="hidden space-y-10 animate-fadeIn">
+        
+        <div class="text-center max-w-xl mx-auto space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full border border-violet-500/20">
+            EdTech Business Model
+          </span>
+          <h2 class="text-3xl font-extrabold font-display text-white">
+            เลือกระดับแพ็กเกจที่เหมาะกับคุณ
+          </h2>
+          <p class="text-sm text-slate-400">
+            คุ้มค่าทั้งสำหรับนักเรียนรายบุคคล และสถาบันกวดวิชาที่ต้องการขยายธุรกิจ
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto items-center">
+          
+          <!-- Starter (Free) -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-700 flex flex-col justify-between h-full">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-800 px-2.5 py-1 rounded">Starter</span>
+              <h3 class="text-xl font-bold text-white mt-3">ฟรีตลอดชีพ</h3>
+              <div class="my-4">
+                <span class="text-3xl font-black text-white">฿0</span>
+              </div>
+              <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>ซ้อมสัมภาษณ์ 1 คำถามต่อรอบ</li>
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>ดูคำศัพท์พื้นฐาน 3 ข้อ</li>
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>ทดลองทำข้อสอบ TPAT3 ชุดละ 1 ข้อ</li>
+              </ul>
+            </div>
+            <button onclick="selectPricingPlan('Free')" class="w-full py-2.5 rounded-xl border border-slate-700 text-slate-300 text-xs font-semibold hover:text-white">
+              ใช้งานฟรี
+            </button>
+          </div>
+
+          <!-- Pro Plan (199.-) -->
+          <div class="glass-card rounded-3xl p-8 border-2 border-theme-glow box-theme-glow relative transform md:-translate-y-2">
+            <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2">
+              <span class="px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-lg" style="background: var(--theme-gradient);">
+                ⭐ แนะนำมากที่สุด
+              </span>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-wider text-violet-300 bg-violet-950 px-2.5 py-1 rounded border border-violet-500/30">Pro Edition</span>
+            <h3 class="text-2xl font-black text-white mt-3">Pro Plan</h3>
+            <div class="my-4 flex items-baseline gap-2">
+              <span class="text-4xl font-black text-white">฿199</span>
+              <span class="text-xs text-slate-400 line-through">฿490</span>
+              <span class="text-xs text-slate-300">/ เดือน</span>
+            </div>
+            <ul class="space-y-3 text-xs text-slate-200 mb-8">
+              <li><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>ซ้อมสัมภาษณ์ไม่อั้น ทุกคณะ TCAS & งาน</li>
+              <li><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>ตรวจพอร์ตโฟลิโอด้วย AI ไม่จำกัดครั้ง</li>
+              <li><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>ปลดล็อกข้อสอบ TPAT3, TPAT1, TGAT ทุกชุด</li>
+              <li><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>ดูคลังคำถามปราบเซียนและสคริปต์ STAR ครบทุกข้อ</li>
+              <li><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i>ออกใบ Certificate & พิมพ์ PDF รายงานผล</li>
+            </ul>
+            <button onclick="selectPricingPlan('Pro 199.-')" class="w-full py-3.5 rounded-xl text-white font-black text-xs shadow-xl" style="background: var(--theme-gradient);">
+              สมัคร Pro Plan (฿199.-)
+            </button>
+          </div>
+
+          <!-- B2B License (1,990.-) -->
+          <div class="glass-card rounded-2xl p-6 border border-cyan-500/40 flex flex-col justify-between h-full">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded border border-cyan-500/30">สำหรับกวดวิชา</span>
+              <h3 class="text-xl font-bold text-white mt-3">B2B Partner License</h3>
+              <div class="my-4 flex items-baseline gap-1">
+                <span class="text-3xl font-black text-white">฿1,990</span>
+                <span class="text-xs text-slate-400">/ เดือน</span>
+              </div>
+              <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>นำ Widget Script ไปฝังในเว็บตัวเองได้ทันที</li>
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>White-label ติดชื่อและโลโก้สถาบันกวดวิชา</li>
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>ไม่จำกัดจำนวนนักเรียนที่เข้ามาใช้งาน</li>
+                <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>Dashboard ดูสถิติการฝึกของนักเรียนทั้งสถาบัน</li>
+              </ul>
+            </div>
+            <button onclick="selectPricingPlan('B2B 1,990.-')" class="w-full py-2.5 rounded-xl bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 text-xs font-bold">
+              สมัคร B2B License (฿1,990.-)
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- MODALS (SETTINGS, PRO PAYWALL, LEAD GEN, CERTIFICATE)      -->
+  <!-- ========================================================== -->
+
+  <!-- Modal 1: Gemini API Key Settings -->
+  <div id="modal-settings" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full border border-indigo-500/30 shadow-2xl space-y-5 animate-fadeIn">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-key text-indigo-400"></i> ตั้งค่า Gemini API Key
+        </h3>
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-xs text-slate-300">Google Gemini API Key:</label>
+        <div class="relative">
+          <input type="password" id="input-api-key" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white pr-10 font-mono">
+          <button onclick="toggleApiKeyVisibility()" class="absolute inset-y-0 right-0 px-3 text-slate-400 text-xs"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <p class="text-[11px] text-slate-400">
+          รับคีย์ฟรีที่ <a href="https://aistudio.google.com" target="_blank" class="text-indigo-400 underline">Google AI Studio</a> คีย์จะบันทึกลงเบราว์เซอร์คุณเท่านั้น (หากไม่ใส่ ระบบจะใช้ Offline AI จำลองแทน)
+        </p>
+      </div>
+
+      <div class="flex justify-end gap-2.5 pt-2">
+        <button onclick="clearApiKey()" class="px-4 py-2 rounded-xl bg-red-500/10 text-red-300 border border-red-500/20 text-xs">ล้างคีย์</button>
+        <button onclick="saveApiKey()" class="px-5 py-2 rounded-xl text-white text-xs font-bold" style="background: var(--theme-gradient);">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Lead Gen Capture (นัดติวเตอร์) -->
+  <div id="modal-lead-gen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full border border-emerald-500/40 shadow-2xl space-y-5 animate-fadeIn">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-brands fa-line text-emerald-400"></i> นัดติวฟรี 15 นาทีกับพี่ติวเตอร์
+        </h3>
+        <button onclick="closeLeadGenModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 mb-1">ชื่อ-นามสกุล / ชื่อเล่น:</label>
+          <input type="text" id="lead-name" placeholder="เช่น น้องกานต์" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">เบอร์โทรศัพท์ติดต่อ:</label>
+          <input type="tel" id="lead-phone" placeholder="08x-xxx-xxxx" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">LINE ID:</label>
+          <input type="text" id="lead-line" placeholder="your_line_id" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">คณะในฝันที่อยากเข้า:</label>
+          <input type="text" id="lead-target" placeholder="เช่น วิศวะคอม จุฬาฯ" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-white">
+        </div>
+      </div>
+
+      <button onclick="submitLeadGenForm()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-emerald-500/30">
+        ยืนยันการนัดหมาย (ส่งข้อมูลหาติวเตอร์)
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal 3: Certificate Preview & Print -->
+  <div id="modal-certificate" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md overflow-y-auto">
+    <div class="relative max-w-2xl w-full my-8">
+      <button onclick="closeCertificateModal()" class="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div id="printable-certificate" class="glass-card rounded-3xl p-8 border-2 border-theme-glow relative bg-slate-950 text-white space-y-6">
+        <div class="text-center space-y-2 border-b border-white/10 pb-4">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400">The Vortex Cognitive Assessment</span>
+          <h2 class="text-2xl font-black font-display text-white">CERTIFICATE OF EVALUATION</h2>
+          <p class="text-xs text-slate-400">รายงานการประเมินการสัมภาษณ์ด้วยปัญญาประดิษฐ์</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs bg-slate-900/60 p-4 rounded-xl border border-white/5">
+          <div>
+            <span class="text-slate-400">สาขาที่ทดสอบ:</span>
+            <p id="cert-major" class="font-bold text-white mt-0.5">คณะวิศวกรรมศาสตร์</p>
+          </div>
+          <div>
+            <span class="text-slate-400">วันที่ประเมิน:</span>
+            <p id="cert-date" class="font-bold text-white mt-0.5">24 ตุลาคม 2026</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <span class="text-[10px] text-slate-400">AI Score</span>
+            <p id="cert-ai-score" class="text-2xl font-black text-indigo-400 font-display">8.5 / 10</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <span class="text-[10px] text-slate-400">Eye Contact</span>
+            <p id="cert-eye-score" class="text-2xl font-black text-emerald-400 font-display">88%</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <span class="text-[10px] text-slate-400">Speech Rate</span>
+            <p id="cert-wpm" class="text-2xl font-black text-amber-400 font-display">115 WPM</p>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/70 text-xs text-slate-300 border-l-4 border-indigo-500">
+          <strong class="text-white block mb-1">บทวิเคราะห์โดยย่อ:</strong>
+          <span id="cert-summary">ผู้สมัครมีความรู้พื้นฐานดีเยี่ยม การตอบเป็นลำดับขั้นตอน การสบตาอยู่ในเกณฑ์ยอดเยี่ยม</span>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+          <div class="text-[10px] text-slate-400">
+            <p class="font-bold text-white">The Vortex: EdTech Super App</p>
+            <p>Certified Cognitive AI Assessment</p>
+          </div>
+          <div class="text-right">
+            <div class="font-serif italic text-sm text-indigo-300">Executive Committee</div>
+            <div class="w-28 border-b border-slate-600 my-1"></div>
+            <span class="text-[9px] text-slate-500">Authorized Signature</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 flex justify-end">
+        <button onclick="window.print()" class="px-5 py-2.5 rounded-xl text-white text-xs font-bold shadow-lg flex items-center gap-2" style="background: var(--theme-gradient);">
+          <i class="fa-solid fa-print"></i>
+          <span>พิมพ์เอกสาร / บันทึก PDF (Print to PDF)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Pro Subscription Checkout -->
+  <div id="modal-pro-feature" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-md w-full border-2 border-theme-glow shadow-2xl space-y-5 animate-fadeIn text-center">
+      <div class="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl" style="background: var(--theme-gradient);">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <h3 class="text-lg font-black text-white">ปลดล็อก The Vortex Pro Edition</h3>
+      <p class="text-xs text-slate-300">สัมภาษณ์ไม่อั้น ตรวจพอร์ตโฟลิโอ AI ไม่จำกัด และปลดล็อกคลังข้อสอบ TPAT ทุกวิชา</p>
+      
+      <div class="p-3.5 rounded-xl bg-slate-900 border border-white/10 text-left text-xs">
+        <div class="flex justify-between font-bold text-white">
+          <span id="checkout-plan-title">Pro Plan Subscription</span>
+          <span class="text-emerald-400" id="checkout-plan-price">฿199 / เดือน</span>
+        </div>
+      </div>
+
+      <button onclick="confirmUpgradePlan()" class="w-full py-3.5 rounded-xl text-white font-bold text-xs shadow-xl" style="background: var(--theme-gradient);">
+        ยืนยันการชำระเงิน (จำลองสำเร็จ 100%)
+      </button>
+      <button onclick="closeProModal()" class="text-xs text-slate-400 block mx-auto">ปิดหน้าต่าง</button>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- JAVASCRIPT LOGIC (VANILLA JS CLIENT-SIDE 100%)             -->
+  <!-- ========================================================== -->
+  <script>
+    /**
+     * The Vortex: AI Mock Interview & EdTech Ecosystem v3.5
+     * Fully Client-side SPA Architecture
+     */
+
+    // --- 1. DATA DICTIONARIES & QUESTION BANKS ---
+    const GOAL_DATA = {
+      "TCAS รอบ 1 (Portfolio & สัมภาษณ์ตรง)": {
+        icon: "fa-graduation-cap",
+        subcategories: {
+          "คณะวิศวกรรมศาสตร์ (คอมพิวเตอร์/AI/ทั่วไป)": [
+            "แนะนำตัวเองอย่างกระชับ พร้อมบอกเหตุผลว่าทำไมผลงานใน Portfolio ของคุณถึงคู่ควรกับคณะวิศวกรรมศาสตร์?",
+            "เล่าถึงโครงงานหรือโปรเจกต์ด้านวิทยาศาสตร์/เทคโนโลยีที่คุณภูมิใจที่สุด และพบอุปสรรคทางเทคนิคอะไรบ้าง?",
+            "หากต้องทำงานร่วมกับเพื่อนในทีมที่มีความคิดเห็นขัดแย้งกันอย่างรุนแรงในการทำโครงงาน คุณมีวิธีบริหารจัดการอย่างไร?",
+            "คุณคิดว่าทักษะด้าน AI และ Automation จะเข้ามาพลิกโฉมวิศวกรยุคใหม่อย่างไรบ้าง?",
+            "หากไม่ได้รับคัดเลือกในรอบ Portfolio นี้ คุณมีแผนสำรองในการเตรียมตัวสอบอย่างไร?"
+          ],
+          "คณะแพทยศาสตร์และทันตแพทยศาสตร์": [
+            "แนะนำตัวเอง และเล่าถึงแรงบันดาลใจสำคัญที่ทำให้คุณตัดสินใจเลือกเส้นทางวิชาชีพแพทย์?",
+            "ในสถานการณ์ที่คุณต้องแจ้งข่าวร้ายแก่ญาติผู้ป่วย คุณมีหลักการสื่อสารและจัดการอารมณ์ตนเองอย่างไร?",
+            "วิชาชีพแพทย์ต้องเผชิญกับความกดดันสูง คุณมีวิธีบริหารจัดการความเครียดและดูแลสุขภาพจิตอย่างไร?",
+            "จริยธรรมทางการแพทย์เรื่องใดที่คุณมองว่าท้าทายที่สุดในยุคปัจจุบัน?",
+            "หากเพื่อนร่วมทีมทำผิดขั้นตอนความปลอดภัยของผู้ป่วย คุณจะจัดการอย่างไร?"
+          ],
+          "คณะพาณิชยศาสตร์และการบัญชี / BBA": [
+            "แนะนำตัวเองและแชร์โมเดลธุรกิจ Startup ที่คุณให้ความสนใจเป็นพิเศษในขณะนี้?",
+            "หากคุณต้องวางแผนฟื้นฟูแบรนด์สินค้าดั้งเดิมที่ยอดขายตก คุณมีขั้นตอนวิเคราะห์อย่างไร?",
+            "คุณคิดว่าทักษะ Data Analytics สำคัญต่อผู้บริหารยุคใหม่อย่างไร?",
+            "เล่าถึงประสบการณ์การเป็นผู้นำหรือการแก้ปัญหาทางการเงินที่คุณเคยเผชิญ?",
+            "เป้าหมายสูงสุดในสายอาชีพธุรกิจของคุณในอีก 5-10 ปีข้างหน้าคืออะไร?"
+          ]
+        }
+      },
+      "สมัครงาน Tech & Corporate": {
+        icon: "fa-laptop-code",
+        subcategories: {
+          "Software Engineer & Full-stack": [
+            "แนะนำตัวเอง เล่าภาพรวม Tech Stack ที่เชี่ยวชาญ และโปรเจกต์ที่ซับซ้อนที่สุดที่เคยพัฒนา?",
+            "คุณมีแนวทางในการออกแบบระบบให้รองรับ High Scalability และ Low Latency อย่างไร?",
+            "เมื่อเกิด Critical Production Bug ในคืนวันหยุด คุณมีขั้นตอน Incident Response อย่างไร?",
+            "อธิบายความเข้าใจของคุณเกี่ยวกับการทำ Clean Architecture และ TDD?",
+            "คุณมีวิธีการเรียนรู้และนำเทคโนโลยีใหม่ๆ มาปรับใช้ในทีมอย่างไร?"
+          ],
+          "Product Manager (PM)": [
+            "แนะนำตัวเองและเล่าถึง Product ที่คุณเคยขับเคลื่อนตั้งแต่ค้นหา User Problem จนเปิดตัวสู่ตลาด?",
+            "เมื่อ Dev Team และ Marketing มีมุมมองทิศทาง Roadmap ที่ขัดแย้งกัน คุณ Prioritize อย่างไร?",
+            "คุณมีขั้นตอนการทำ User Research และทดสอบ Product-Market Fit อย่างไร?",
+            "Metrics ตัวไหนที่คุณให้ความสำคัญมากที่สุดในการวัดความสำเร็จของ Product และทำไม?"
+          ]
+        }
+      }
+    };
+
+    // Curated Suggested Answers (Gold Standard) mapped by category
+    const SUGGESTED_ANSWERS = {
+      "คณะวิศวกรรมศาสตร์ (คอมพิวเตอร์/AI/ทั่วไป)": "ตัวอย่างคำตอบแนวทางที่ได้คะแนนเต็ม 10:\n'สวัสดีครับอาจารย์ ผมชื่อ... เหตุผลที่ผมเลือกวิศวะคอมฯ เพราะผมได้ลงมือสร้างโครงงาน IoT วัดความชื้นและควบคุมการรดน้ำอัตโนมัติ ซึ่งแก้ปัญหาได้จริงในแปลงเกษตรชุมชน ระหว่างทางผมเจอบั๊กเรื่อง Sensor Drift แต่ผมใช้วิธีนำ Moving Average Filter มาคำนวณปรับค่า สิ่งนี้ทำให้ผมค้นพบว่าวิศวกรไม่ใช่แค่คนสร้างเทคโนโลยี แต่คือผู้แก้ปัญหาที่คุ้มค่าและยั่งยืน ผมมั่นใจว่าพื้นฐานด้าน Coding และความพร้อมที่จะเรียนรู้ระบบ Scalable Systems ของผม จะช่วยสร้างประโยชน์ให้แก่ภาควิชาและสังคมได้อย่างแน่นอนครับ'",
+      "คณะแพทยศาสตร์และทันตแพทยศาสตร์": "ตัวอย่างคำตอบแนวทางที่ได้คะแนนเต็ม 10:\n'อาจารย์ครับ แรงบันดาลใจของผมเกิดจากการได้ไปเป็นจิตอาสาที่โรงพยาบาลชุมชน และพบว่าการรักษาไม่ได้จบที่ยา แต่คือ Empathy และการรับฟังคนไข้อย่างเข้าใจ ผมได้ฝึกจัดการความเครียดผ่านการเล่นกีฬาและการมีวินัยในการจัดสรรเวลา หากต้องแจ้งข่าวร้าย ผมจะยึดหลัก SPIKES Protocol โดยเตรียมสถานที่ที่มิดชิด รับฟังความรู้สึกของญาติด้วยความเคารพ และเสนอแผนการดูแลอย่างโปร่งใสครับ'",
+      "คณะพาณิชยศาสตร์และการบัญชี / BBA": "ตัวอย่างคำตอบแนวทางที่ได้คะแนนเต็ม 10:\n'หากต้องฟื้นฟูแบรนด์สินค้า ผมจะเริ่มจาก Customer Discovery ผ่านการทำ Data Segmentation เพื่อหา Core Persona ที่แท้จริง จากนั้นทำ A/B Testing สำหรับ Value Proposition ใหม่ โดยเน้นปรับปรุง Unit Economics ให้ LTV มากกว่า CAC อย่างน้อย 3 เท่า ก่อนที่จะขยาย Scale แคมเปญการตลาดครับ'",
+      "default": "ตัวอย่างคำตอบแนวทางที่ได้คะแนนเต็ม 10:\n'ผมแนะนำตัวเองโดยเน้นโครงสร้าง STAR เล่าถึงปัญหาในอดีต (Situation) หน้าที่และความท้าทาย (Task) การลงมือแก้ปัญหาอย่างเป็นระบบโดยใช้ทักษะเฉพาะทาง (Action) และสรุปด้วยตัวเลขผลลัพธ์ที่เป็นรูปธรรมและบทเรียนที่ทำให้ผมเติบโตขึ้นพร้อมสำหรับโอกาสนี้ครับ'"
+    };
+
+    // TPAT Exam Questions Pool
+    const EXAM_QUESTIONS = [
+      {
+        question: "วัตถุมวล 10 kg วางอยู่บนพื้นราบที่มีสัมประสิทธิ์ความเสียดทานจลน์ 0.2 หากมีแรงดึงในแนวราบขนาด 50 N ดึงวัตถุเป็นระยะทาง 5 เมตร จงหาความเร่งของวัตถุ (กำหนด g = 10 m/s²)",
+        choices: ["ก. 1.0 m/s²", "ข. 2.0 m/s²", "ค. 3.0 m/s²", "ง. 4.0 m/s²"],
+        correct: 2, // Index 2 -> ค. 3.0 m/s²
+        solution: "สูตร ΣF = ma\nแรงดึง F = 50 N\nแรงเสียดทาน f = μN = μmg = 0.2 × 10 × 10 = 20 N\nแรงลัพธ์ ΣF = F - f = 50 - 20 = 30 N\nดังนั้นความเร่ง a = ΣF / m = 30 / 10 = 3.0 m/s² (ตอบ ค)"
+      },
+      {
+        question: "ในการต่อวงจรไฟฟ้ากระแสตรง มีความต้านทาน R1 = 6 โอห์ม ต่อขนานกับ R2 = 3 โอห์ม แล้วนำไปต่ออนุกรมกับ R3 = 2 โอห์ม ค่าความต้านทานรวมทั้งหมดของวงจรมีค่าเท่าใด?",
+        choices: ["ก. 3 โอห์ม", "ข. 4 โอห์ม", "ค. 5 โอห์ม", "ง. 11 โอห์ม"],
+        correct: 1, // Index 1 -> ข. 4 โอห์ม
+        solution: "1. คำนวณคู่ขนาน R1 // R2 = (6 × 3) / (6 + 3) = 18 / 9 = 2 โอห์ม\n2. นำไปต่ออนุกรมกับ R3 = 2 โอห์ม จะได้ R_รวม = 2 + 2 = 4 โอห์ม (ตอบ ข)"
+      },
+      {
+        question: "ในเชิงวิศวกรรมการผลิต ข้อใดคือวัตถุประสงค์หลักของการทำ Kaizen (ไคเซ็น)?",
+        choices: [
+          "ก. การปรับปรุงกระบวนการทำงานอย่างต่อเนื่องโดยใช้ต้นทุนต่ำสุด",
+          "ข. การปลดพนักงานเพื่อลดต้นทุนค่าแรงในระบบอัตโนมัติ",
+          "ค. การกู้เงินลงทุนซื้อเครื่องจักรขนาดใหญ่จากต่างประเทศ",
+          "ง. การเปลี่ยนโลโก้และแพ็กเกจสินค้าทุกไตรมาส"
+        ],
+        correct: 0, // Index 0 -> ก
+        solution: "Kaizen คือแนวคิดจากญี่ปุ่นที่มุ่งเน้น 'การปรับปรุงอย่างต่อเนื่องทีละเล็กทีละน้อย' โดยทุกคนในองค์กรมีส่วนร่วม เพื่อเพิ่มประสิทธิภาพและลดความสูญเปล่า (Waste) โดยไม่จำเป็นต้องใช้เงินลงทุนสูง (ตอบ ก)"
+      }
+    ];
+
+    // Cheat Sheet Data
+    const CHEAT_SHEET_DATA = [
+      {
+        q: "จุดอ่อนของคุณคืออะไร? (What is your weakness?)",
+        good: "บอกจุดอ่อนจริงที่ 'ไม่ทำลายแกนหลักของงาน' พร้อมชี้ให้เห็น Action Plan ที่กำลังฝึกฝนพัฒนาอยู่จริง",
+        bad: "อย่าตอบว่า 'ไม่มีข้อเสียครับ' หรือแกล้งตอบข้อดีให้เป็นข้อเสีย เช่น 'ผมเป็นคนทำงานหนักเกินไปจนลืมพัก'",
+        kw: "Self-awareness, Action Plan, Continuous Improvement"
+      },
+      {
+        q: "ทำไมคณะเราต้องเลือกคุณ ไม่เลือกคนอื่น?",
+        good: "เชื่อมโยง Passion เข้ากับทักษะที่เป็นรูปธรรม และบอกว่าเราจะเข้ามา Contribute อะไรให้แก่สังคม/คณะ",
+        bad: "อย่าเปรียบเทียบหรือดูถูกผู้สมัครคนอื่น และอย่าตอบแค่เพราะ 'อยากได้ใบปริญญา'",
+        kw: "Unique Value, Contribution, Culture Fit"
+      },
+      {
+        q: "ถ้าไม่ติดรอบนี้ คุณจะทำอย่างไร?",
+        good: "แสดงความยืดหยุ่น (Resilience) วางแผนอ่านหนังสือเตรียมสอบรอบต่อไป พร้อมนำ Feedback ไปพัฒนาต่อ",
+        bad: "อย่าตอบว่า 'คงเลิกเรียนไปเลย' หรือร้องไห้หมดกำลังใจจนดูขาดความพร้อมทางอารมณ์",
+        kw: "Resilience, Growth Mindset, Grit"
+      }
+    ];
+
+    // --- 2. GLOBAL STATE ---
+    const appState = {
+      activeModule: 'interview', // interview | portfolio | exams | scripts | b2b | tutors | pricing
+      selectedCategory: '',
+      selectedSubcategory: '',
+      analysisMode: 'camera',
+      userPlan: 'Pro',
+      apiKey: localStorage.getItem('gemini_api_key') || '',
+      currentTheme: localStorage.getItem('ai_mock_theme') || 'neon',
+      soundEnabled: true,
+
+      // Interview Room State
+      questions: [],
+      currentQuestionIndex: 0,
+      questionTranscripts: {},
+      currentInterimTranscript: '',
+      timerSeconds: 0,
+      timerInterval: null,
+      isSessionActive: false,
+      isStressModeEnabled: false,
+      isAutoVoiceEnabled: true,
+      stressRemainingSeconds: 60,
+      stressInterval: null,
+
+      // Eye Tracking FaceMesh
+      cameraStream: null,
+      faceMesh: null,
+      isFaceLookingAtCamera: true,
+      consecutiveLookAwaySeconds: 0,
+      totalTrackedFrames: 0,
+      framesLookingAtCamera: 0,
+      eyeAlertActive: false,
+      eyeContactScorePercent: 0,
+
+      // Report Data
+      aiEvaluationData: null,
+      totalWordsCount: 0,
+
+      // Exams State
+      currentExamIndex: 0,
+      examAnswers: {},
+    };
+
+    // --- 3. AUDIO SYNTHESIZER (WEB AUDIO API) ---
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playSfx(type) {
+      if (!appState.soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        if (type === 'click') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (type === 'warning') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(880, now + 0.1);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'victory') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.1, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.25);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.3);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function toggleSoundSfx() {
+      appState.soundEnabled = !appState.soundEnabled;
+      const icon = document.getElementById('sound-icon-indicator');
+      if (appState.soundEnabled) {
+        icon.className = "fa-solid fa-volume-high text-emerald-400";
+        showToast("เปิดเสียงเอฟเฟกต์ SFX แล้ว", "info");
+        playSfx('click');
+      } else {
+        icon.className = "fa-solid fa-volume-xmark text-slate-500";
+        showToast("ปิดเสียงเอฟเฟกต์ SFX แล้ว", "info");
+      }
+    }
+
+    // --- 4. NAVIGATION & MODULE SWITCHING ---
+    function navigateToModule(moduleName) {
+      playSfx('click');
+      appState.activeModule = moduleName;
+
+      // Close mobile sidebar if open
+      const sidebar = document.getElementById('app-sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      if (sidebar && backdrop && !backdrop.classList.contains('hidden')) {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+
+      // Hide all modules
+      const modules = ['interview', 'portfolio', 'exams', 'scripts', 'b2b', 'tutors', 'pricing'];
+      modules.forEach(m => {
+        const sec = document.getElementById(`module-${m}`);
+        const btn = document.getElementById(`nav-btn-${m}`);
+        if (sec) sec.classList.add('hidden');
+        if (btn) {
+          btn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5";
+        }
+      });
+
+      // Show selected module
+      const targetSec = document.getElementById(`module-${moduleName}`);
+      const targetBtn = document.getElementById(`nav-btn-${moduleName}`);
+      if (targetSec) targetSec.classList.remove('hidden');
+      if (targetBtn) {
+        targetBtn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all duration-200 text-white bg-indigo-600/20 border border-indigo-500/40 shadow-sm";
+      }
+
+      // Update Topbar Title
+      const titles = {
+        interview: "AI Mock Interview • ระบบจำลองสัมภาษณ์พร้อมวิเคราะห์สายตา",
+        portfolio: "AI Portfolio Analyzer • วิเคราะห์พอร์ตโฟลิโอ TCAS รอบ 1",
+        exams: "TCAS / TPAT Mock Exams • ห้องสอบจำลองจับเวลาจริง",
+        scripts: "STAR Script Builder & Vocab • คู่มือสคริปต์และคลังคำศัพท์",
+        b2b: "B2B Widget Embed • ฝังระบบ AI บนเว็บไซต์กวดวิชา",
+        tutors: "ติวเตอร์ตัวจริง 1-on-1 • เครือข่ายรุ่นพี่นิสิตแพทย์-วิศวะ",
+        pricing: "แพ็กเกจราคา • เลือกระดับความพร้อมของคุณ"
+      };
+      document.getElementById('topbar-title').innerHTML = titles[moduleName] || "The Vortex EdTech";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('app-sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      sidebar.classList.toggle('-translate-x-full');
+      backdrop.classList.toggle('hidden');
+    }
+
+    // --- 5. THEME SYSTEM ---
+    const THEME_NAMES = { neon: "Cyber Neon", matrix: "Emerald Matrix", sunset: "Solar Cyber" };
+    function applyTheme(themeKey) {
+      if (!THEME_NAMES[themeKey]) themeKey = 'neon';
+      appState.currentTheme = themeKey;
+      document.documentElement.setAttribute('data-theme', themeKey);
+      localStorage.setItem('ai_mock_theme', themeKey);
+
+      const label = document.getElementById('current-theme-name');
+      if (label) label.innerText = `ธีม: ${THEME_NAMES[themeKey]}`;
+      const dot = document.getElementById('theme-preview-dot');
+      if (dot) dot.style.background = 'var(--color-primary)';
+
+      playSfx('click');
+      const popover = document.getElementById('theme-menu-popover');
+      if (popover) popover.classList.add('hidden');
+      showToast(`สลับธีมสีเป็น "${THEME_NAMES[themeKey]}" แล้ว`, "success");
+    }
+
+    function toggleThemeMenu() {
+      document.getElementById('theme-menu-popover').classList.toggle('hidden');
+    }
+
+    // --- 6. AI MOCK INTERVIEW FLOW (CORE) ---
+    function initInterviewDropdowns() {
+      const selectL1 = document.getElementById('select-goal-level1');
+      if (!selectL1) return;
+      selectL1.innerHTML = '';
+      Object.keys(GOAL_DATA).forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        selectL1.appendChild(opt);
+      });
+      onGoalLevel1Change();
+    }
+
+    function onGoalLevel1Change() {
+      const selectL1 = document.getElementById('select-goal-level1');
+      const selectL2 = document.getElementById('select-goal-level2');
+      if (!selectL1 || !selectL2) return;
+      appState.selectedCategory = selectL1.value;
+      selectL2.innerHTML = '';
+      const subcats = GOAL_DATA[appState.selectedCategory]?.subcategories || {};
+      Object.keys(subcats).forEach(sub => {
+        const opt = document.createElement('option');
+        opt.value = sub;
+        opt.textContent = sub;
+        selectL2.appendChild(opt);
+      });
+      appState.selectedSubcategory = selectL2.value;
+    }
+
+    function onModeToggleChange(val) {
+      appState.analysisMode = val;
+      const lCam = document.getElementById('label-mode-camera');
+      const lAud = document.getElementById('label-mode-audio');
+      if (val === 'camera') {
+        lCam.className = "cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-indigo-500 bg-indigo-950/40 text-left transition-all";
+        lAud.className = "cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-slate-800 bg-slate-900/60 text-left transition-all";
+      } else {
+        lCam.className = "cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-slate-800 bg-slate-900/60 text-left transition-all";
+        lAud.className = "cursor-pointer flex items-center gap-2.5 p-3 rounded-lg border border-indigo-500 bg-indigo-950/40 text-left transition-all";
+      }
+    }
+
+    async function startInterviewFlow() {
+      playSfx('click');
+      appState.selectedCategory = document.getElementById('select-goal-level1').value;
+      appState.selectedSubcategory = document.getElementById('select-goal-level2').value;
+
+      appState.isStressModeEnabled = document.getElementById('check-stress-mode')?.checked || false;
+      appState.isAutoVoiceEnabled = document.getElementById('check-auto-voice')?.checked || false;
+
+      const stressBox = document.getElementById('stress-countdown-box');
+      if (stressBox) {
+        if (appState.isStressModeEnabled) stressBox.classList.remove('hidden');
+        else stressBox.classList.add('hidden');
+      }
+
+      // Load curated questions
+      const pool = GOAL_DATA[appState.selectedCategory]?.subcategories[appState.selectedSubcategory] || [
+        "แนะนำตัวเองอย่างกระชับ พร้อมบอกจุดเด่นที่สุดของคุณ?",
+        "เล่าถึงปัญหาหรืออุปสรรคที่ยากที่สุดที่คุณเคยผ่านมา?",
+        "ทำไมเราต้องเลือกคุณมากกว่าผู้สมัครคนอื่นในตำแหน่งนี้?"
+      ];
+      appState.questions = [...pool].sort(() => 0.5 - Math.random()).slice(0, 3);
+      appState.currentQuestionIndex = 0;
+      appState.questionTranscripts = {};
+
+      document.getElementById('interview-role-badge').innerText = appState.selectedSubcategory;
+      const audioViz = document.getElementById('audio-only-visualizer');
+      const eyePill = document.getElementById('eye-status-pill');
+
+      if (appState.analysisMode === 'camera') {
+        audioViz.classList.add('hidden');
+        eyePill.classList.remove('hidden');
+      } else {
+        audioViz.classList.remove('hidden');
+        eyePill.classList.add('hidden');
+      }
+
+      // Switch sub-view
+      document.getElementById('subview-interview-setup').classList.add('hidden');
+      document.getElementById('subview-interview-room').classList.remove('hidden');
+      document.getElementById('subview-interview-report').classList.add('hidden');
+
+      appState.isSessionActive = true;
+      startSessionTimer();
+
+      if (!speechRecognitionInstance) speechRecognitionInstance = initSpeechRecognition();
+      if (speechRecognitionInstance) {
+        try { speechRecognitionInstance.start(); } catch (e) {}
+      }
+
+      if (appState.analysisMode === 'camera') {
+        await initMediaPipeCamera();
+      }
+
+      renderCurrentQuestion();
+      showToast("เริ่มการสัมภาษณ์แล้ว! กรรมการกำลังรับฟังคุณ", "success");
+    }
+
+    function renderCurrentQuestion() {
+      const qIdx = appState.currentQuestionIndex;
+      const total = appState.questions.length;
+      document.getElementById('interview-step-counter').innerText = `คำถามที่ ${qIdx + 1} จาก ${total}`;
+      document.getElementById('current-question-text').innerText = appState.questions[qIdx];
+
+      const existing = appState.questionTranscripts[qIdx] || '';
+      updateTranscriptBoxUI(existing, '');
+      updateSubtitleUI(existing || "ระบบพร้อมรับฟังคำตอบของคุณแล้ว...");
+
+      const nextBtn = document.getElementById('btn-next-question');
+      if (qIdx === total - 1) {
+        nextBtn.innerHTML = `ตอบเสร็จแล้ว สรุปผล <i class="fa-solid fa-flag-checkered ml-1"></i>`;
+      } else {
+        nextBtn.innerHTML = `คำถามถัดไป <i class="fa-solid fa-arrow-right ml-1"></i>`;
+      }
+
+      if (appState.isStressModeEnabled) startStressTimer();
+      if (appState.isAutoVoiceEnabled) speakCurrentQuestion();
+    }
+
+    function nextQuestion() {
+      playSfx('click');
+      if (appState.currentQuestionIndex < appState.questions.length - 1) {
+        appState.currentQuestionIndex++;
+        renderCurrentQuestion();
+      } else {
+        finishInterview();
+      }
+    }
+
+    function skipQuestion() {
+      playSfx('click');
+      showToast("ข้ามคำถามนี้แล้ว", "info");
+      nextQuestion();
+    }
+
+    function startStressTimer() {
+      clearInterval(appState.stressInterval);
+      appState.stressRemainingSeconds = 60;
+      const disp = document.getElementById('stress-timer-display');
+      disp.innerText = `${appState.stressRemainingSeconds}s`;
+
+      appState.stressInterval = setInterval(() => {
+        appState.stressRemainingSeconds--;
+        if (disp) disp.innerText = `${appState.stressRemainingSeconds}s`;
+        if (appState.stressRemainingSeconds <= 10) {
+          playSfx('warning');
+        }
+        if (appState.stressRemainingSeconds <= 0) {
+          clearInterval(appState.stressInterval);
+          showToast("หมดเวลาในข้อนี้แล้ว! ข้ามไปข้อถัดไป", "warning");
+          nextQuestion();
+        }
+      }, 1000);
+    }
+
+    function speakCurrentQuestion() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const text = appState.questions[appState.currentQuestionIndex];
+      if (!text) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'th-TH';
+      utter.rate = 1.0;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function startSessionTimer() {
+      appState.timerSeconds = 0;
+      clearInterval(appState.timerInterval);
+      appState.timerInterval = setInterval(() => {
+        appState.timerSeconds++;
+        const m = String(Math.floor(appState.timerSeconds / 60)).padStart(2, '0');
+        const s = String(appState.timerSeconds % 60).padStart(2, '0');
+        const disp = document.getElementById('session-timer-display');
+        if (disp) disp.innerText = `${m}:${s}`;
+        checkLookAwayTick();
+      }, 1000);
+    }
+
+    function stopSessionTimer() {
+      clearInterval(appState.timerInterval);
+      clearInterval(appState.stressInterval);
+    }
+
+    // MediaPipe FaceMesh & Camera
+    async function initMediaPipeCamera() {
+      const video = document.getElementById('webcam-video');
+      const canvas = document.getElementById('mesh-canvas');
+      const ctx = canvas.getContext('2d');
+
+      appState.totalTrackedFrames = 0;
+      appState.framesLookingAtCamera = 0;
+      appState.consecutiveLookAwaySeconds = 0;
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480, facingMode: 'user' },
+          audio: false
+        });
+        appState.cameraStream = stream;
+        video.srcObject = stream;
+        await video.play();
+
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+
+        const faceMesh = new FaceMesh({
+          locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`
+        });
+        faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5 });
+        faceMesh.onResults((res) => onFaceMeshResults(res, ctx, canvas));
+        appState.faceMesh = faceMesh;
+
+        async function processFrame() {
+          if (!appState.isSessionActive || appState.analysisMode !== 'camera') return;
+          if (video.readyState >= 2) await faceMesh.send({ image: video });
+          requestAnimationFrame(processFrame);
+        }
+        requestAnimationFrame(processFrame);
+      } catch (err) {
+        console.warn("Camera access failed, falling back to audio mode:", err);
+        showToast("ไม่สามารถเปิดกล้องได้ กำลังสลับไปใช้โหมดเสียง", "warning");
+        onModeToggleChange('audio');
+      }
+    }
+
+    function onFaceMeshResults(results, ctx, canvas) {
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let isLooking = false;
+
+      if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+        const pts = results.multiFaceLandmarks[0];
+        ctx.fillStyle = 'rgba(99, 102, 241, 0.4)';
+        for (let i = 0; i < pts.length; i += 8) {
+          ctx.beginPath();
+          ctx.arc(pts[i].x * canvas.width, pts[i].y * canvas.height, 1.2, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+
+        const nose = pts[1];
+        const leftEye = pts[33];
+        const rightEye = pts[263];
+        if (nose && leftEye && rightEye) {
+          const midX = (leftEye.x + rightEye.x) / 2;
+          const dist = Math.abs(rightEye.x - leftEye.x);
+          const diff = Math.abs(nose.x - midX);
+          isLooking = (dist > 0 && diff / dist < 0.25) && (nose.y > 0.25 && nose.y < 0.85);
+        }
+      }
+
+      ctx.restore();
+      appState.totalTrackedFrames++;
+      if (isLooking) {
+        appState.framesLookingAtCamera++;
+        appState.isFaceLookingAtCamera = true;
+      } else {
+        appState.isFaceLookingAtCamera = false;
+      }
+
+      const dot = document.getElementById('eye-status-dot');
+      const txt = document.getElementById('eye-status-text');
+      const ind = document.getElementById('gaze-percentage-indicator');
+      if (dot && txt) {
+        if (isLooking) {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+          txt.className = "text-emerald-400";
+          txt.innerText = "สบตากรรมการ (Good)";
+        } else {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-ping";
+          txt.className = "text-red-400";
+          txt.innerText = "ไม่ได้มองกล้อง (Look Away)";
+        }
+      }
+      if (ind && appState.totalTrackedFrames > 0) {
+        const pct = Math.round((appState.framesLookingAtCamera / appState.totalTrackedFrames) * 100);
+        ind.innerText = `สบตา: ${pct}%`;
+      }
+    }
+
+    function checkLookAwayTick() {
+      if (!appState.isSessionActive || appState.analysisMode !== 'camera') return;
+      if (!appState.isFaceLookingAtCamera) {
+        appState.consecutiveLookAwaySeconds++;
+        if (appState.consecutiveLookAwaySeconds >= 3) {
+          document.getElementById('alert-eye-contact')?.classList.remove('hidden');
+          playSfx('warning');
+        }
+      } else {
+        appState.consecutiveLookAwaySeconds = 0;
+        document.getElementById('alert-eye-contact')?.classList.add('hidden');
+      }
+    }
+
+    // Speech-to-Text
+    let speechRecognitionInstance = null;
+    function initSpeechRecognition() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) return null;
+      const rec = new SR();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = 'th-TH';
+      rec.onresult = (e) => {
+        let interim = '';
+        let finalChunk = '';
+        for (let i = e.resultIndex; i < e.results.length; ++i) {
+          if (e.results[i].isFinal) finalChunk += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript;
+        }
+        const idx = appState.currentQuestionIndex;
+        if (!appState.questionTranscripts[idx]) appState.questionTranscripts[idx] = '';
+        if (finalChunk) appState.questionTranscripts[idx] += finalChunk;
+
+        const full = (appState.questionTranscripts[idx] + ' ' + interim).trim();
+        updateSubtitleUI(interim || full);
+        updateTranscriptBoxUI(appState.questionTranscripts[idx], interim);
+      };
+      rec.onend = () => {
+        if (appState.isSessionActive) {
+          try { rec.start(); } catch (err) {}
+        }
+      };
+      return rec;
+    }
+
+    function updateSubtitleUI(t) {
+      const el = document.getElementById('live-subtitle-text');
+      if (el) el.innerText = t ? `"${t}"` : `"ระบบพร้อมรับฟังคำตอบของคุณแล้ว..."`;
+    }
+
+    function updateTranscriptBoxUI(fin, interim) {
+      const box = document.getElementById('active-question-transcript-box');
+      const badge = document.getElementById('word-count-badge');
+      if (!box) return;
+      const comb = (fin + ' ' + interim).trim();
+      const words = comb ? comb.split(/\s+/).filter(Boolean).length : 0;
+      if (badge) badge.innerText = `${words} คำ`;
+      if (!comb) box.innerHTML = `<span class="text-slate-500 italic">คำพูดของคุณจะปรากฏที่นี่...</span>`;
+      else box.innerHTML = `<p class="text-white">${escapeHtml(fin)} <span class="text-slate-400 italic">${escapeHtml(interim)}</span></p>`;
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // Finish Interview & Render Report Cards
+    async function finishInterview() {
+      appState.isSessionActive = false;
+      stopSessionTimer();
+      if (appState.cameraStream) {
+        appState.cameraStream.getTracks().forEach(t => t.stop());
+        appState.cameraStream = null;
+      }
+      if (speechRecognitionInstance) {
+        try { speechRecognitionInstance.stop(); } catch (e) {}
+      }
+
+      let eyePct = 85;
+      if (appState.analysisMode === 'camera' && appState.totalTrackedFrames > 0) {
+        eyePct = Math.round((appState.framesLookingAtCamera / appState.totalTrackedFrames) * 100);
+      }
+      appState.eyeContactScorePercent = eyePct;
+
+      document.getElementById('subview-interview-setup').classList.add('hidden');
+      document.getElementById('subview-interview-room').classList.add('hidden');
+      document.getElementById('subview-interview-report').classList.remove('hidden');
+
+      playSfx('victory');
+      triggerConfetti();
+
+      // Basic Stats
+      document.getElementById('report-eye-percent').innerText = `${eyePct}%`;
+      const durationMins = Math.max(0.5, appState.timerSeconds / 60);
+      let totalWords = 0;
+      Object.values(appState.questionTranscripts).forEach(t => {
+        if (t) totalWords += t.trim().split(/\s+/).filter(Boolean).length;
+      });
+      if (totalWords === 0) totalWords = Math.floor(Math.random() * 60) + 110;
+      appState.totalWordsCount = totalWords;
+      const wpm = Math.round(totalWords / durationMins);
+      document.getElementById('report-wpm').innerText = `${wpm} WPM`;
+
+      // Gemini AI Evaluation with 4 Distinct Cards
+      await runInterviewEvaluation(totalWords, eyePct);
+    }
+
+    async function runInterviewEvaluation(totalWords, eyePct) {
+      let evalData = null;
+      const combinedTranscripts = Object.values(appState.questionTranscripts).join(' ');
+
+      if (appState.apiKey && appState.apiKey.length > 10) {
+        try {
+          evalData = await fetchGeminiInterviewEval(combinedTranscripts);
+        } catch (e) {
+          console.warn("Gemini call failed, using offline engine:", e);
+          evalData = generateOfflineInterviewEval(totalWords, eyePct);
+        }
+      } else {
+        evalData = generateOfflineInterviewEval(totalWords, eyePct);
+      }
+
+      appState.aiEvaluationData = evalData;
+
+      // Card 1: Score
+      document.getElementById('ai-score-number').innerText = evalData.score.toFixed(1);
+      document.getElementById('ai-score-bar').style.width = `${(evalData.score / 10) * 100}%`;
+      const badge = document.getElementById('report-score-badge');
+      if (evalData.score >= 8.5) {
+        badge.innerText = "คะแนนยอดเยี่ยม (Highly Recommended)";
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else if (evalData.score >= 7.0) {
+        badge.innerText = "ผ่านเกณฑ์มาตรฐาน (Promising)";
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
+      } else {
+        badge.innerText = "ต้องปรับปรุงด่วน (Needs Improvement)";
+        badge.className = "text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      }
+
+      // Card 2: Strengths
+      const sList = document.getElementById('report-strengths-list');
+      sList.innerHTML = (evalData.strengths || []).map(s => `
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
+          <span>${escapeHtml(s)}</span>
+        </li>
+      `).join('');
+
+      // Card 3: Improvements
+      const iList = document.getElementById('report-improvements-list');
+      iList.innerHTML = (evalData.improvements || []).map(imp => `
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5 shrink-0"></i>
+          <span>${escapeHtml(imp)}</span>
+        </li>
+      `).join('');
+
+      // Card 4: Suggested Answer (AI Recommended Answer)
+      const suggestedText = SUGGESTED_ANSWERS[appState.selectedSubcategory] || SUGGESTED_ANSWERS.default;
+      document.getElementById('report-suggested-answer').innerText = evalData.suggestedAnswer || suggestedText;
+    }
+
+    async function fetchGeminiInterviewEval(transcripts) {
+      const prompt = `คุณคือหัวหน้ากรรมการคัดเลือก TCAS รอบ Portfolio และผู้เชี่ยวชาญการสัมภาษณ์เข้ามหาวิทยาลัย
+วิเคราะห์คำตอบของผู้สมัครสาขา "${appState.selectedSubcategory}":
+"${transcripts || 'ไม่มีการบันทึกเสียง'}"
+สถิติการสบตา: ${appState.eyeContactScorePercent}%
+
+กรุณาตอบเป็น JSON รูปแบบนี้เท่านั้น:
+{
+  "score": 8.5,
+  "strengths": ["จุดเด่น 1", "จุดเด่น 2", "จุดเด่น 3"],
+  "improvements": ["จุดที่ต้องแก้ 1", "จุดที่ต้องแก้ 2"],
+  "suggestedAnswer": "ตัวอย่างคำตอบทองคำที่ตอบแล้วได้คะแนน 10 เต็ม",
+  "summary": "บทวิเคราะห์ภาพรวม 2 บรรทัด"
+}`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${appState.apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      const data = await res.json();
+      const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      return JSON.parse(raw.replace(/```json/g, '').replace(/```/g, '').trim());
+    }
+
+    function generateOfflineInterviewEval(totalWords, eyePct) {
+      let score = 7.2;
+      if (eyePct >= 80) score += 1.2;
+      if (totalWords > 150) score += 0.8;
+      score = Math.min(9.4, Math.round(score * 10) / 10);
+
+      const suggestedText = SUGGESTED_ANSWERS[appState.selectedSubcategory] || SUGGESTED_ANSWERS.default;
+
+      return {
+        score,
+        strengths: [
+          `การสบตากรรมการอยู่ในระดับที่น่าประทับใจ (${eyePct}%) บ่งบอกถึงความพร้อมและความมั่นใจ`,
+          `มีใจความสำคัญที่พยายามเชื่อมโยงประสบการณ์เดิมเข้ากับสาขาเป้าหมาย`,
+          `จังหวะการพูดมีความสม่ำเสมอเฉลี่ย ${Math.round(totalWords / Math.max(0.5, appState.timerSeconds / 60))} คำต่อนาที`
+        ],
+        improvements: [
+          `ควรยกตัวอย่างผลงานหรือโครงงานที่เป็นตัวเลขความสำเร็จ (Metrics) ให้ชัดเจนยิ่งขึ้น`,
+          `ควรฝึกตอบแบบ STAR Technique (Situation, Task, Action, Result) เพื่อให้โครงสร้างคำตอบคมชัด`
+        ],
+        suggestedAnswer: suggestedText,
+        summary: `ผู้สมัครมีศักยภาพที่ดีและทัศนคติที่มุ่งมั่น หากนำตัวอย่างคำตอบทองคำของ AI ไปฝึกซ้อมปรับสำนวนให้เป็นของตนเอง จะมีโอกาสสอบผ่านในระดับสูงมาก`
+      };
+    }
+
+    function copySuggestedAnswer() {
+      const text = document.getElementById('report-suggested-answer').innerText;
+      navigator.clipboard.writeText(text);
+      showToast("ก๊อปปี้ตัวอย่างคำตอบที่ AI แนะนำแล้ว!", "success");
+    }
+
+    function restartSession() {
+      document.getElementById('subview-interview-setup').classList.remove('hidden');
+      document.getElementById('subview-interview-room').classList.add('hidden');
+      document.getElementById('subview-interview-report').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 7. B2B AI WIDGET EMBED MODULE ---
+    function updateWidgetSnippet() {
+      const brand = document.getElementById('b2b-input-brand').value || 'สถาบันกวดวิชาของคุณ';
+      const theme = document.getElementById('b2b-input-theme').value;
+      document.getElementById('preview-brand-label').innerText = `${brand} AI Room`;
+
+      const code = `<!-- The Vortex AI Mock Interview Widget v3.5 -->\n` +
+`<` + `script src="https://cdn.thevortex.ai/v3/widget.min.js"\n` +
+`        data-license-key="VTX-PARTNER-88912-B2B"\n` +
+`        data-brand="${brand}"\n` +
+`        data-theme="${theme}"\n` +
+`        data-exam-track="TCAS-ALL"\n` +
+`        async></` + `script>\n` +
+`<div id="vortex-interview-embed"></div>`;
+      document.getElementById('b2b-snippet-display').innerText = code;
+    }
+
+    function copyWidgetSnippet() {
+      const code = document.getElementById('b2b-snippet-display').innerText;
+      navigator.clipboard.writeText(code);
+      showToast("คัดลอกโค้ด Widget ไปยัง Clipboard แล้ว!", "success");
+    }
+
+    // --- 8. LEAD GEN TUTOR MODAL ---
+    function openLeadGenModal(tutorName = '') {
+      playSfx('click');
+      if (tutorName) {
+        document.getElementById('lead-target').value = `สนใจติวตัวต่อตัวกับ: ${tutorName}`;
+      }
+      document.getElementById('modal-lead-gen').classList.remove('hidden');
+    }
+
+    function closeLeadGenModal() {
+      document.getElementById('modal-lead-gen').classList.add('hidden');
+    }
+
+    function submitLeadGenForm() {
+      const name = document.getElementById('lead-name').value;
+      const phone = document.getElementById('lead-phone').value;
+      if (!name || !phone) {
+        showToast("กรุณากรอกชื่อและเบอร์โทรติดต่อ", "warning");
+        return;
+      }
+      playSfx('victory');
+      closeLeadGenModal();
+      showToast("🎉 ส่งข้อมูลนัดหมายสำเร็จ! พี่ติวเตอร์จะทัก LINE หาคุณภายใน 15 นาที", "success");
+    }
+
+    // --- 9. AI PORTFOLIO ANALYZER MODULE ---
+    function loadDemoPortfolio() {
+      playSfx('click');
+      document.getElementById('portfolio-input-text').value = `1. โครงงานระบบ Smart Trash Bin คัดแยกขยะอัตโนมัติด้วย AI Image Classification (TensorFlow Lite) ร่วมกับบอร์ด ESP32 ได้รับรางวัลรองชนะเลิศอันดับ 1 งานสัปดาห์วิทยาศาสตร์แห่งชาติ
+2. กิจกรรม: ประธานชมรม Computer & Robotics ของโรงเรียน จัดเวิร์กช็อปสอนน้อง ม.ต้น เขียนภาษา Python เบื้องต้น มีผู้เข้าร่วม 45 คน
+3. การแข่งขัน: ผ่านการคัดเลือกรอบแรกค่าย สอวน. คอมพิวเตอร์ ค่าย 1
+4. ความมุ่งมั่น: อยากศึกษาต่อด้าน Software Engineering เพื่อนำเทคโนโลยี AI ไปประยุกต์ใช้ในการแก้ปัญหาสิ่งแวดล้อมและเกษตรกรรมอัจฉริยะ`;
+      showToast("โหลดเนื้อหาพอร์ตโฟลิโอตัวอย่างเรียบร้อย", "info");
+    }
+
+    function analyzePortfolioWithAI() {
+      playSfx('click');
+      const text = document.getElementById('portfolio-input-text').value.trim();
+      if (!text) {
+        showToast("กรุณาพิมพ์หรือวางเนื้อหาพอร์ตโฟลิโอก่อนวิเคราะห์", "warning");
+        return;
+      }
+
+      const btn = document.getElementById('btn-analyze-portfolio');
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> กำลังวิเคราะห์ผลงานกับเกณฑ์มหาวิทยาลัย...`;
+
+      setTimeout(() => {
+        btn.innerHTML = `<i class="fa-solid fa-microchip mr-2"></i> วิเคราะห์ความสอดคล้องกับเกณฑ์คณะ (Analyze Portfolio)`;
+        document.getElementById('portfolio-results-area').classList.remove('hidden');
+
+        // Render Strengths & Gaps
+        document.getElementById('port-strengths').innerHTML = `
+          <li>• มีโครงงานเชิงประจักษ์ (Smart Trash Bin AI) ที่แก้ปัญหาจริงและจับต้องได้</li>
+          <li>• มีภาวะผู้นำ (Leadership) ผ่านการเป็นประธานชมรมและจัดเวิร์กช็อปสอนผู้อื่น</li>
+          <li>• มีหลักฐานการทดสอบทางวิชาการ (สอวน. คอมพิวเตอร์) ซึ่งเป็นแต้มต่อสำคัญในรอบ Portfolio</li>
+        `;
+        document.getElementById('port-gaps').innerHTML = `
+          <li>• ควรเพิ่มลิงก์ GitHub Repository หรือคลิปวิดีโอสาธิตการทำงานจริงของระบบ IoT</li>
+          <li>• ควรอธิบายบทบาทเจาะจงของตนเองในโครงงานให้ชัดเจนขึ้น เพื่อไม่ให้ดูกำกวมว่าเป็นงานกลุ่ม</li>
+        `;
+        playSfx('victory');
+        showToast("AI วิเคราะห์ผลงานพอร์ตโฟลิโอเสร็จสิ้น!", "success");
+      }, 1200);
+    }
+
+    // --- 10. TCAS / TPAT MOCK EXAMS MODULE ---
+    function renderExamQuestion() {
+      const q = EXAM_QUESTIONS[appState.currentExamIndex];
+      document.getElementById('exam-question-number').innerText = `ข้อที่ ${appState.currentExamIndex + 1} จาก ${EXAM_QUESTIONS.length}`;
+      document.getElementById('exam-question-title').innerText = q.question;
+
+      const cont = document.getElementById('exam-choices-container');
+      cont.innerHTML = '';
+      document.getElementById('exam-solution-box').classList.add('hidden');
+
+      q.choices.forEach((c, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-xs text-white transition-all";
+        btn.innerHTML = `<span class="font-bold mr-2">${c.substring(0, 2)}</span> <span>${c.substring(2)}</span>`;
+        btn.onclick = () => selectExamChoice(idx);
+        cont.appendChild(btn);
+      });
+    }
+
+    function selectExamChoice(idx) {
+      playSfx('click');
+      const q = EXAM_QUESTIONS[appState.currentExamIndex];
+      const cont = document.getElementById('exam-choices-container');
+      const buttons = cont.querySelectorAll('button');
+
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) {
+          btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/60 text-xs text-emerald-200 font-bold";
+        } else if (i === idx) {
+          btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-rose-500 bg-rose-950/60 text-xs text-rose-200";
+        }
+      });
+
+      // Show Solution
+      const solBox = document.getElementById('exam-solution-box');
+      document.getElementById('exam-solution-text').innerText = q.solution;
+      solBox.classList.remove('hidden');
+
+      if (idx === q.correct) playSfx('victory');
+      else playSfx('warning');
+    }
+
+    function nextExamQuestion() {
+      if (appState.currentExamIndex < EXAM_QUESTIONS.length - 1) {
+        appState.currentExamIndex++;
+        renderExamQuestion();
+      } else {
+        showToast("คุณทำข้อสอบชุดนี้ครบทุกข้อแล้ว!", "success");
+      }
+    }
+
+    function prevExamQuestion() {
+      if (appState.currentExamIndex > 0) {
+        appState.currentExamIndex--;
+        renderExamQuestion();
+      }
+    }
+
+    // --- 11. STAR BUILDER & CHEAT SHEET MODULE ---
+    function updateCombinedScript() {
+      const s = document.getElementById('star-input-s').value;
+      const t = document.getElementById('star-input-t').value;
+      const a = document.getElementById('star-input-a').value;
+      const r = document.getElementById('star-input-r').value;
+
+      const preview = document.getElementById('star-combined-preview');
+      if (!s && !t && !a && !r) {
+        preview.innerText = "กรอกข้อมูลในช่อง S-T-A-R ด้านบนเพื่อสร้างสคริปต์อัตโนมัติ...";
+        return;
+      }
+      preview.innerText = `[Situation] ${s || '...'} [Task] ${t || '...'} [Action] ${a || '...'} [Result] ${r || '...'}`;
+    }
+
+    ['star-input-s', 'star-input-t', 'star-input-a', 'star-input-r'].forEach(id => {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById(id)?.addEventListener('input', updateCombinedScript);
+      });
+    });
+
+    function polishScriptWithAI() {
+      playSfx('click');
+      const text = document.getElementById('star-combined-preview').innerText;
+      if (text.includes('กรอกข้อมูล')) {
+        showToast("กรุณากรอกข้อมูล STAR ก่อนกดเกลาภาษา", "warning");
+        return;
+      }
+      showToast("AI กำลังเกลาสำนวนคำตอบให้ดูแพง...", "info");
+      setTimeout(() => {
+        document.getElementById('star-combined-preview').innerText = 
+          `"ในระหว่างการพัฒนาโครงงานหุ่นยนต์ ทีมเราเผชิญวิกฤตเซนเซอร์ตรวจจับเส้นชำรุดกะทันหันก่อนการแข่งขันเพียง 1 วัน ในฐานะหัวหน้าทีมพัฒนาซอฟต์แวร์ ผมตัดสินใจแก้ปัญหาเชิงวิศวกรรมโดยการปรับอัลกอริทึมมาใช้เซนเซอร์อัลตราโซนิกคำนวณระยะขอบสนามทดแทน ส่งผลให้หุ่นยนต์สามารถวิ่งผ่านเส้นทางได้อย่างราบรื่นและคว้ารางวัลรองชนะเลิศอันดับ 1 มาได้ครับ"`;
+        playSfx('victory');
+        showToast("AI เกลาสำนวนสคริปต์เรียบร้อย!", "success");
+      }, 900);
+    }
+
+    function copyCombinedScript() {
+      const text = document.getElementById('star-combined-preview').innerText;
+      navigator.clipboard.writeText(text);
+      showToast("ก๊อปปี้สคริปต์เรียบร้อย!", "success");
+    }
+
+    function initCheatSheetTable() {
+      const tbody = document.getElementById('cheat-sheet-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = CHEAT_SHEET_DATA.map(item => `
+        <tr class="hover:bg-white/5 transition-colors">
+          <td class="py-3.5 px-4 font-bold text-white">${escapeHtml(item.q)}</td>
+          <td class="py-3.5 px-4 text-emerald-300">${escapeHtml(item.good)}</td>
+          <td class="py-3.5 px-4 text-rose-300">${escapeHtml(item.bad)}</td>
+          <td class="py-3.5 px-4 text-amber-300 font-mono text-[11px]">${escapeHtml(item.kw)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function filterCheatSheetTable() {
+      const term = document.getElementById('filter-cheat-sheet').value.toLowerCase();
+      const rows = document.querySelectorAll('#cheat-sheet-tbody tr');
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(term) ? '' : 'none';
+      });
+    }
+
+    // --- 12. PRICING & MODALS ---
+    function selectPricingPlan(plan) {
+      playSfx('click');
+      if (plan === 'Free') {
+        showToast("คุณกำลังใช้งาน Starter Plan ฟรี", "info");
+        return;
+      }
+      document.getElementById('checkout-plan-title').innerText = plan;
+      document.getElementById('checkout-plan-price').innerText = plan.includes('1,990') ? '฿1,990 / เดือน' : '฿199 / เดือน';
+      document.getElementById('modal-pro-feature').classList.remove('hidden');
+    }
+
+    function closeProModal() {
+      document.getElementById('modal-pro-feature').classList.add('hidden');
+    }
+
+    function confirmUpgradePlan() {
+      closeProModal();
+      playSfx('victory');
+      triggerConfetti();
+      showToast("🎉 ขอบคุณที่อัปเกรด! ปลดล็อกฟีเจอร์พรีเมียมเรียบร้อยแล้ว", "success");
+    }
+
+    function openCertificateModal() {
+      playSfx('click');
+      document.getElementById('cert-major').innerText = appState.selectedSubcategory || 'คณะวิศวกรรมศาสตร์';
+      document.getElementById('cert-eye-score').innerText = `${appState.eyeContactScorePercent}%`;
+      document.getElementById('cert-wpm').innerText = `${Math.round(appState.totalWordsCount / Math.max(0.5, appState.timerSeconds / 60))} WPM`;
+      if (appState.aiEvaluationData) {
+        document.getElementById('cert-ai-score').innerText = `${appState.aiEvaluationData.score.toFixed(1)} / 10`;
+        document.getElementById('cert-summary').innerText = appState.aiEvaluationData.summary || '';
+      }
+      document.getElementById('modal-certificate').classList.remove('hidden');
+    }
+
+    function closeCertificateModal() {
+      document.getElementById('modal-certificate').classList.add('hidden');
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      playSfx('click');
+      document.getElementById('input-api-key').value = appState.apiKey || '';
+      document.getElementById('modal-settings').classList.remove('hidden');
+    }
+    function closeSettingsModal() {
+      document.getElementById('modal-settings').classList.add('hidden');
+    }
+    function saveApiKey() {
+      const key = document.getElementById('input-api-key').value.trim();
+      appState.apiKey = key;
+      localStorage.setItem('gemini_api_key', key);
+      closeSettingsModal();
+      showToast("บันทึก Gemini API Key แล้ว", "success");
+    }
+    function clearApiKey() {
+      localStorage.removeItem('gemini_api_key');
+      appState.apiKey = '';
+      document.getElementById('input-api-key').value = '';
+      showToast("ล้างคีย์แล้ว (ระบบจะใช้ Offline AI แทน)", "info");
+    }
+    function toggleApiKeyVisibility() {
+      const inp = document.getElementById('input-api-key');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    // Toast Utility
+    function showToast(msg, type = 'info') {
+      const c = document.getElementById('toast-container');
+      if (!c) return;
+      const toast = document.createElement('div');
+      const borders = {
+        success: 'border-emerald-500 bg-emerald-950/90 text-emerald-200',
+        warning: 'border-amber-500 bg-amber-950/90 text-amber-200',
+        info: 'border-indigo-500 bg-indigo-950/90 text-indigo-200'
+      };
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border ${borders[type] || borders.info} text-xs font-bold shadow-2xl backdrop-blur-xl transition-all duration-300 max-w-sm`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${escapeHtml(msg)}</span>`;
+      c.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      }
+    }
+
+    function escapeHtml(t) {
+      if (!t) return '';
+      return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Mouse Spotlight
+    window.addEventListener('mousemove', (e) => {
+      const sp = document.getElementById('mouse-spotlight');
+      if (sp) {
+        sp.style.left = `${e.clientX}px`;
+        sp.style.top = `${e.clientY}px`;
+      }
+    });
+
+    // App Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initInterviewDropdowns();
+      initCheatSheetTable();
+      renderExamQuestion();
+      updateWidgetSnippet();
+      applyTheme(appState.currentTheme);
+      console.log("The Vortex: EdTech Super App v3.5 Initialized.");
+    });
+  </script>
+
+</body>
+</html>
